@@ -1,0 +1,260 @@
+body {
+  background-color: whitesmoke;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0;
+  font-family: sans-serif;
+}
+ul {
+  font-size: .8em;
+  padding-left: 1em;
+}
+.B {
+  font-weight:bold;
+}
+.C {
+  text-align:center;
+}
+.Re {
+  color:red;
+}
+.Gr {
+  color:green;
+}
+.Bl {
+  color:blue;
+}
+.Or {
+  color:orange;
+}
+#cont {
+  position: absolute;
+  background-color: whitesmoke;
+}
+
+.uButtons {
+  text-align: center;
+  margin: 0 .2em;
+  padding: 1px 12px;
+  color: black;
+  font-size: .75em;
+  border: .1em solid black;
+  border-radius: 5em;
+  display: inline-block;
+}
+
+.uButtonsDisabled {
+  background-color: #d5d5d5;
+  background: linear-gradient(#eeeeee, #d5d5d5);
+  opacity: 0.5;
+}
+
+.uButtonGrey {
+  background-color: #d5d5d5;
+  background: linear-gradient(#eee, #999);
+}
+
+.uButtonGrey:hover {
+  background-color: #dfdfdf;
+  background: linear-gradient(#fff, #aaa);
+}
+
+.uButtonGrey:active {
+  background: linear-gradient(#ddd, #888);
+}
+
+.uButtonGreen {
+  background: linear-gradient(#7e7, #191);
+}
+
+.uButtonGreen:hover {
+  background: linear-gradient(#8f8, #2a2);
+}
+
+.uButtonGreen:active {
+  background: linear-gradient(#6d6, #080);
+}
+
+.uButtonRed {
+  background: linear-gradient(#e77, #911);
+}
+
+.uButtonRed:hover {
+  background: linear-gradient(#f88, #a22);
+}
+
+.uButtonRed:active {
+  background: linear-gradient(#d66, #800);
+}
+
+.uButtonLeft {
+  border-radius: 320px 0px 0px 320px;
+  margin-right: 0;
+  border-right: 0;
+}
+
+.uButtonMid {
+  border-radius: 0px;
+  margin-left: 0;
+  margin-right: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.uButtonRight {
+  border-radius: 0px 320px 320px 0px;
+  margin-left: 0;
+  border-left: 0;
+}
+
+.fsInner {
+  transform: scale(1.5, 1);
+  font-weight: bolder;
+  display: inline-block;
+  padding-top: .1em;
+  line-height: .7em;
+}
+.settB {
+  position: absolute;
+  padding: .2em .5em .2em .4em;
+  line-height: 125%;
+  border-bottom: 2px solid hsl(210, 100%, 50%);
+  border-right: 2px solid hsl(210, 100%, 50%);
+  font-size: 125%;
+}
+
+.settW {
+  position: absolute;
+  top: 0;
+  left: -90%;
+  height: 100%;
+  width: 90%;
+  background-color: hsla(0, 0%, 100%, .95);
+  border-right: 4px solid hsl(210, 100%, 50%);
+  transition: left .5s;
+  text-align: center;
+  padding: 1.5em .8em;
+  box-sizing: border-box;
+}
+
+.volCont {
+  background: linear-gradient(90deg, hsl(240,100%,50%), hsl(180,100%,50%), hsl(120,100%,50%), hsl(60,100%,50%), hsl(0,100%,50%));
+  border: .1em solid black;
+  border-radius: 5em;
+  clear: both;
+  position: relative;
+  margin: 0.6em .2em;
+}
+
+.volInner {
+  position: absolute;
+  border-radius: 5em;
+  border: .1em solid black;
+  top: -0.5em;
+  left: 28.4%;
+  width: 2em;
+  height: 2em;
+}
+
+.vImg {
+  margin-right: 0.2em;
+  transform: scaleX(2.5);
+  font-size: 0.8em;
+  line-height: 2.3em;
+}
+
+#noty {
+  width: 90%;
+  left: 5%;
+  position: absolute;
+  border: 2px solid hsl(0, 0%, 0%);
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 1%;
+  font-weight: bold;
+  background-color: hsla(0, 0%, 100%, .95);
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.loadC {
+  width: 90%;
+  position: relative;
+  margin: 2px auto;
+  border-radius: 24px;
+  border: 2px solid hsl(0, 0%, 50%);
+  text-align: left;
+}
+
+.loadPi {
+  position: relative;
+  border-radius: inherit;
+  height: 24px;
+  width: 0%;
+  background: linear-gradient(hsl(120, 100%, 80%), hsl(120, 100%, 30%));
+}
+
+.loadPc {
+  border-radius: inherit;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: hsl(0, 0%, 50%);
+  font-weight: bold;
+  font-size: 125%;
+  line-height: 24px;
+  top: 0px;
+}
+
+.loadVV {
+  position: relative;
+  float: none;
+  animation: Vom .5s ease-in-out alternate infinite;
+  width: 25%;
+  background: radial-gradient(farthest-side at 50% 50%, hsl(120, 100%, 50%), hsla(0, 100%, 50%, 0));
+}
+
+@keyframes Vom {
+  from {left: 0%;}
+  to {left: 75%;}
+}
+#toastContainer{
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+}
+#toastPopup {
+  box-sizing: border-box;
+  position: absolute;
+  padding: 1.5em;
+  width: 100%;
+  top:0px;
+  border-top: 4px solid hsl(210, 100%, 50%);
+  animation: popupBouncer .5s ease-in-out;
+  background-color: hsla(0, 0%, 100%, .95);
+  background: hsl(0, 0%, 100%);
+}
+@keyframes popupBouncer {
+  0% {top: 100%;}
+  60% {top: -25%;}
+  100% {top: 0%;}
+}
+
+.buttonClose {
+  font-weight: bold;
+  padding: .05em 0.3em;
+  font-size: 1.5em;
+  position: absolute;
+  top: 0px;
+}
+#unp {
+  text-align: center;
+  font-weight: bold;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  padding-bottom: 1.2em;
+  border-bottom: .2em solid black;
+  box-sizing: border-box;
+}

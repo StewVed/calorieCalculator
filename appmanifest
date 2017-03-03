@@ -1,0 +1,23 @@
+{
+  "name": "Calorie and body fat calculator",
+  "short_name": "calorieCalculator",
+  "description": "Calorie and body fat calculator by StewVed",
+  "orientation": "landscape",
+  "display": "fullscreen",
+  "lang": "en",
+  "scope": "/",
+  "theme_color": "whitesmoke",
+  "background_color": "whitesmoke",
+  "icons": [{
+    "src": "favicon.svg"
+  }, {
+    "src": "favicon.png",
+    "sizes": "64x64",
+    "type": "image/png"
+  }, {
+    "src": "favicon256.png",
+    "sizes": "256x256",
+    "type": "image/png"
+  }
+  ]
+}
