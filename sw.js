@@ -1,4 +1,4 @@
-var zAppCache = 'calorieCalc-2017-3-3';
+var zAppCache = 'calorieCalc-2017-3-4';
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppCache).then(function(cache) {
     return cache.addAll([
@@ -16,6 +16,7 @@ self.addEventListener('install', function(event) {
       , './sounds.js'
       , './storage.js'
       , './texts.js'
+      , './toolTips.js'
 
     /*
       Do not include:

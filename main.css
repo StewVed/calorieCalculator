@@ -258,3 +258,49 @@ ul {
   border-bottom: .2em solid black;
   box-sizing: border-box;
 }
+
+
+.toolTipclass {
+  margin:auto;
+  padding:0px 4px;
+  color: #092;
+  transition: color 0.5s;
+}
+
+.toolTipclass:hover {
+  transition: color 0.7s;
+  color: #04f;
+}
+
+.conty {
+  float:left;
+  margin:0px;
+  padding:3px;
+  text-align:center;
+  overflow:hidden;
+  box-sizing:border-box;
+}
+.c4 {
+  width:calc(25% - 1px);
+}
+.c5 {
+  width:calc(20% - 1px);
+}
+.inputThingy{
+  clear:both;
+  float:left;
+  margin:0px;
+  padding:.2em;
+  width:100%;
+  text-align:center;
+  border:1px solid #000;
+  border-radius:.01em;
+  box-sizing:border-box;
+  font-size: inherit;
+}
+.inputEn{
+  background:linear-gradient(#fff, #ddd);
+}
+.inputDi{
+  background:linear-gradient(#eee, #ccc);
+}

@@ -42,20 +42,25 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 , imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjAAIAAAQAASDSLW8AAAAASUVORK5CYII="'
 //vars to hold variables for the window
 , gameWindow = null
-//tooltip system from Webtop project
+//tooltip system adapted from Webtop project
+, tooltipVars = {over:false, was:null, is:null}
+, measureTips = '<br><br>Try to keep the measuring tape as horizontal as you can.<br><br>repeat each set of measurements three times. eg. neck, waist, neck, waist, neck, waist for Males. (not neck, neck, neck, waist, waist, waist!)'
 , toolTips = {
-  'zAge': '16+<br><br>For even more accuracy, include fraction of year.<br>eg. if your birthday was 3 months ago,<br>put (your age).25 (3 divided by 12)',
-  'zSitting': '<span style="font-weight:bold;color:#acf">This is automatically calculated<br>by taking all of other activities<br>out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>Either sitting, reclining,</li><li>or standing still, quietly</li><li>reading</li><li>listening to music (Not dancing),</li><li>desk work.</li></ul>',
-  'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>slow swimming</li></ul>',
-  'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>',
-  'zHeavy': 'This is High-intensity activty like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work,<br>eg. 30 minutes weight training may only<br>be around 5 minutes of actual lifing. ',
-  'dCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since<br>' + 'you customised your activity-levels.',
-  'zBMI': 'An average adult&apos;s ideal BMI is in the 18.5 to 24.9 range.<br>If your BMI is less than 18.5, you likely weigh less than is ideal for your height,<br>but if your BMI is 25 or more, you may weigh more than is ideal for your height.<br><br><span style="color:#fa8;">(Use this only as a guide)<span>',
-  'zWeight': 'Calculated using your height, and<br>the BMI of 21.75, which is the middle<br>of the healthy range for an average person.<br><br><span style="color:#fa8;">(As with BMI itself, Use this only as a guide)<span>',
-  'zWaist': 'An average adult&apos;s ideal waist measurement<br>is simply half their height :-)<br><br><span style="color:#fa8;">(Use this only as a guide)<span>',
-  'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guidline of 600 calories gain/defecit per day.<br><br>' + 'Everybody is diferent, and though this calorie calutator<br>should be more accurate than most available, your individual<br>body-type, metabolism, etc may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your<br>target calorie intake by 200 calories, and if you are<br>losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.',
-  'zToLose': 'Simply the difference between<br>your current weight and your ideal weight.<br><br><span style="color:#fa8;">(Use this only as a guide)<span>',
-  'zToGoal': 'Assuming an average of 0.7kg per week,<br>this is how many weeks it would<br>take to reach your ideal weight.<br><br><span style="color:#fa8;">(Use this only as a guide)<span>'
+  'zDob': '16+<br><br>Enter your date of birth in YYYY-MM-DD format, eg, 1987-01-23 for the 23rd of January 1987.' 
+, 'zNeck': 'Measure just under the Adam&apos; apple, taking care to not include the traps.' + measureTips
+, 'zWaist': 'Measure directly over the navel for Males, and a little above the navel for Females.' + measureTips
+, 'zHips': 'Measure the biggest rounding of the glutes (bum).' + measureTips
+, 'zSitting': '<span style="font-weight:bold;color:#acf">This is automatically calculated<br>by taking all of other activities<br>out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>Either sitting, reclining,</li><li>or standing still, quietly</li><li>reading</li><li>listening to music (Not dancing),</li><li>desk work.</li></ul>'
+, 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>slow swimming</li></ul>'
+, 'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>'
+, 'zHeavy': 'This is High-intensity activty like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work,<br>eg. 30 minutes weight training may only<br>be around 5 minutes of actual lifing. '
+, 'dCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since<br>' + 'you customised your activity-levels.'
+, 'zBMI': 'An average adult&apos;s ideal BMI is in the 18.5 to 24.9 range.<br>If your BMI is less than 18.5, you likely weigh less than is ideal for your height,<br>but if your BMI is 25 or more, you may weigh more than is ideal for your height.<br><br><span style="color:#fa8;">(Use this only as a guide)<span>'
+, 'zWeight': 'Calculated using your height, and<br>the BMI of 21.75, which is the middle<br>of the healthy range for an average person.<br><br><span style="color:#fa8;">(As with BMI itself, Use this only as a guide)<span>'
+, 'zWaist': 'An average adult&apos;s ideal waist measurement<br>is simply half their height :-)<br><br><span style="color:#fa8;">(Use this only as a guide)<span>'
+, 'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guidline of 600 calories gain/defecit per day.<br><br>' + 'Everybody is diferent, and though this calorie calutator<br>should be more accurate than most available, your individual<br>body-type, metabolism, etc may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your<br>target calorie intake by 200 calories, and if you are<br>losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.'
+, 'zToLose': 'Simply the difference between<br>your current weight and your ideal weight.<br><br><span style="color:#fa8;">(Use this only as a guide)<span>'
+, 'zToGoal': 'Assuming an average of 0.7kg per week,<br>this is how many weeks it would<br>take to reach your ideal weight.<br><br><span style="color:#fa8;">(Use this only as a guide)<span>'
 }
 , LS1 = '@#~'
 , LS2 = '~#@'
@@ -108,16 +113,7 @@ function Init() {
   cc_calc();
 }
 function initContent() {
-  var pNone = 'style="clear:both;float:left;width:62%;margin:0;padding:3px;text-align:center;"'
-  , pText = 'style="float:left;margin:0;padding:3px;width:30%;text-align:center;background:linear-gradient(#fff, #eee);border:1px solid #000;"'
-  , pSel0 = 'style="float:left;width:calc(25% - 7px);margin:0;padding:3px;text-align:center;"'
-  , pSel1 = 'style="float:left;width:calc(20% - 7px);margin:0;padding:3px;text-align:center;"'
-  , pSel2 = 'style="float:left;margin:3px;padding:0px;width:calc(100% - 6px);text-align:center;background:linear-gradient(#fff, #eee);border:1px solid #000;"'
-  , cont4 = 'style="float:left;width:calc(25% - 1px);margin:0px;padding:3px;text-align:center;overflow:hidden;box-sizing:border-box;"'
-  , cont5 = 'style="float:left;width:calc(20% - 1px);margin:0px;padding:3px;text-align:center;overflow:hidden;box-sizing:border-box;"'
-  , toolTipThingy = 'style="margin:auto;padding:0px 4px;"'
-  , inputThingy = 'style="clear:both;float:left;margin:0px;padding:3px;width:100%;text-align:center;background:linear-gradient(#fff, #eee);border:1px solid #000;box-sizing:border-box;"'
-  , butLeft = 'style="width:15%;margin-left:4px"'
+  var butLeft = 'style="width:15%;margin-left:4px"'
   , butRight = 'style="width:15%;margin-right:4px"'
   ;
 
@@ -132,100 +128,116 @@ function initContent() {
 
     + '<button id="cm" type="button" class="uButtonLeft uButtons uButtonGreen " ' + butLeft + ' value="1">cm</button>'
     + '<button id="in" type="button" class="uButtons uButtonGrey uButtonRight" ' + butRight + ' value="0">inch</button>' //default
-
-    + '<div style="float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
-
-    + '<div ' + cont4 + '>Height'
-      + '<input type="text" id="h" class="editEnable" ' + inputThingy + ' size="3" value="176.5">' //176
+    //Height, Weight, and Date of Birth:
+    + '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
+    + '<div class="conty c4">Height'
+      + '<input type="text" id="h" class="editEnable inputThingy inputEn" size="3" value="176.5">' //176
     + '</div>'
 
-    + '<div ' + cont4 + '>Weight'
-      + '<input type="text" id="w" class="editEnable" ' + inputThingy + ' size="5" value="84.7">' //82
+    + '<div class="conty c4">Weight'
+      + '<input type="text" id="w" class="editEnable inputThingy inputEn" size="5" value="80.00">' //82
     + '</div>'
 
-    + '<div ' + cont4 + '>'
-      + '<div id="_zAge" class="toolTipclass" ' + toolTipThingy + '>Age (years)</div>'
-      + '<input type="text" id="a" class="editEnable" ' + inputThingy + ' size="5" value="24.75">'
+    + '<div class="conty c4">'
+      + '<div id="_zDob" class="toolTipclass">DOB</div>'
+      + '<input type="text" id="a" class="editEnable inputThingy inputEn" size="5" value="39.5">'
+    + '</div>'
+    //Next are the neck, waist, and hips measurements for the Body Fat calculation.
+    + '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
+    + '<div class="conty c4">'
+      + '<div id="_zNeck" class="toolTipclass">Neck</div>'
+      + '<input type="text" id="dn" class="editEnable inputThingy inputEn" size="3" value="38.00">' //176
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div id="_zWaist" class="toolTipclass">Waist</div>'
+      + '<input type="text" id="dw" class="editEnable inputThingy inputEn" size="5" value="103.50">' //82
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div id="_zHips" class="toolTipclass">Hips (Female)</div>'
+      + '<input type="text" id="dh" class="editEnable inputThingy inputEn" size="5" value="110.00">'
     + '</div>'
   + '</div>'
 
+  //Activity stuff to make the calorie calculation much more accurate.
   + '<div style="background:lightsalmon;overflow:hidden;">'
     + '<div style="clear:both;float:left;width:100%;text-align:center;margin-top:5px;">Activity per day'
       + '<button id="hr" type="button" class="uButtons uButtonGreen uButtonLeft" ' + butLeft + ' value="1">hrs</button>'
       + '<button id="mn" type="button" class="uButtons uButtonGrey uButtonRight" ' + butRight + ' value="0">mins</button>' //default
     + '</div>'
 
-    + '<div ' + cont5 + '>Sleep'
-      + '<input type="text" id="s" class="editEnable" ' + inputThingy + ' size="5" value="8">'
+    + '<div class="conty c5">Sleep'
+      + '<input type="text" id="s" class="editEnable inputThingy inputEn" size="5" value="8">'
     + '</div>'
 
-    + '<div ' + cont5 + '>'
-      + '<span id="_zSitting" class="toolTipclass" ' + toolTipThingy + '>Sitting</span>'
-      + '<input type="text" id="na" class="editDisable" style="clear:both;float:left;margin:0px;padding:3px;width:100%;text-align:center;background:linear-gradient(#eee, #ccc);border:1px solid #000;box-sizing:border-box;" size="5" value="15.13">'
+    + '<div class="conty c5">'
+      + '<span id="_zSitting" class="toolTipclass">Sitting</span>'
+      + '<input type="text" id="na" class="editDisable inputThingy inputDi" size="5" value="15.13">'
     + '</div>'
 
-    + '<div ' + cont5 + '>'
-      + '<span id="_zLight" class="toolTipclass" ' + toolTipThingy + '>light</span>'
-      + '<input type="text" id="la" class="editEnable" ' + inputThingy + ' size="5" value="0.75">'
+    + '<div class="conty c5">'
+      + '<span id="_zLight" class="toolTipclass">light</span>'
+      + '<input type="text" id="la" class="editEnable inputThingy inputEn" size="5" value="0.75">'
     + '</div>'
 
-    + '<div ' + cont5 + '>'
-      + '<span id="_zMedium" class="toolTipclass" ' + toolTipThingy + '>Medium</span>'
-      + '<input type="text" id="ma" class="editEnable" ' + inputThingy + ' size="5" value="0.05">'
+    + '<div class="conty c5">'
+      + '<span id="_zMedium" class="toolTipclass">Medium</span>'
+      + '<input type="text" id="ma" class="editEnable inputThingy inputEn" size="5" value="0.05">'
     + '</div>'
 
-    + '<div ' + cont5 + '>'
-      + '<span id="_zHeavy" class="toolTipclass" ' + toolTipThingy + '>Heavy</span>'
-      + '<input type="text" id="ha" class="editEnable" ' + inputThingy + ' size="5" value="0.07">'
+    + '<div class="conty c5">'
+      + '<span id="_zHeavy" class="toolTipclass">Heavy</span>'
+      + '<input type="text" id="ha" class="editEnable inputThingy inputEn" size="5" value="0.07">'
     + '</div>'
   + '</div>'
 
+  //Results!
   + '<div style="clear:both;border-top:10px double;background-color:lightblue;overflow:hidden;box-sizing:border-box;">'
-  + '<div ' + cont4 + '>'
-    + '<span id="_dCals" class="toolTipclass" ' + toolTipThingy + '>Maint calories</span>'
-    + '<input type="text" id="c" class="editEnable" ' + inputThingy + ' size="5" value="0000">'
-  + '</div>'
+    + '<div class="conty c4">'
+      + '<span id="_bfat" class="toolTipclass">Body Fat %</span>'
+      + '<input type="text" id="bf" class="editEnable inputThingy inputEn" size="5" value="0000">'
+    + '</div>'
 
-  + '<div ' + cont4 + '>'
-    + '<span id="_zBMI" class="toolTipclass" ' + toolTipThingy + '>BMI</span>'
-    + '<input type="text" id="b" class="editEnable" ' + inputThingy + ' size="5" value="00.00">'
-  + '</div>'
+    + '<div class="conty c4">'
+      + '<span id="_zBMI" class="toolTipclass">BMI</span>'
+      + '<input type="text" id="b" class="editEnable inputThingy inputEn" size="5" value="00.00">'
+    + '</div>'
 
-  + '<div ' + cont4 + '>'
-    + '<span id="_zWeight" class="toolTipclass" ' + toolTipThingy + '>Ideal weight</span>'
-    + '<input type="text" id="iW" class="editEnable" ' + inputThingy + ' size="5" value="00.00">'
-  + '</div>'
+    + '<div class="conty c4">'
+      + '<span id="_zWeight" class="toolTipclass">Ideal weight</span>'
+      + '<input type="text" id="iW" class="editEnable inputThingy inputEn" size="5" value="00.00">'
+    + '</div>'
 
-  + '<div ' + cont4 + '>'
-    + '<span id="_zWaist" class="toolTipclass" ' + toolTipThingy + '>Ideal waist</span>'
-    + '<input type="text" id="d" class="editEnable" ' + inputThingy + ' size="5" value="00.00">'
-  + '</div>'
+    + '<div class="conty c4">'
+      + '<span id="_zWaist" class="toolTipclass">Ideal waist</span>'
+      + '<input type="text" id="d" class="editEnable inputThingy inputEn" size="5" value="00.00">'
+    + '</div>'
 
-  + '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
+    //+ '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
+    + '<div class="conty c4">'
+      + '<span id="_dCals" class="toolTipclass">Maint calories</span>'
+      + '<input type="text" id="c" class="editEnable inputThingy inputEn" size="5" value="0000">'
+    + '</div>'
+    
+    + '<div class="conty c4">'
+      + '<span  id="_zTargCals" class="toolTipclass">Target&nbsp;calories</span>'
+      + '<input type="text" id="cl" class="editEnable inputThingy inputEn" size="5" value="0000">'
+    + '</div>'
 
-  + '<div ' + cont4 + '>'
-    + '<span  id="_zTargCals" class="toolTipclass" ' + toolTipThingy + '>Target&nbsp;calories</span>'
-    + '<input type="text" id="cl" class="editEnable" ' + inputThingy + ' size="5" value="0000">'
-  + '</div>'
+    + '<div class="conty c4">'
+      + '<span id="_zToLose" class="toolTipclass">Lose&nbsp;target</span>'
+      + '<input type="text" id="tl" class="editEnable inputThingy inputEn" size="5" value="00.00">'
+    + '</div>'
 
-  + '<div ' + cont4 + '>'
-    + '<span id="_zToLose" class="toolTipclass" ' + toolTipThingy + '>Lose&nbsp;target</span>'
-    + '<input type="text" id="tl" class="editEnable" ' + inputThingy + ' size="5" value="00.00">'
-  + '</div>'
-
-  + '<div ' + cont4 + '>'
-    + '<span id="_zToGoal" class="toolTipclass" ' + toolTipThingy + '>Weeks&nbsp;to&nbsp;target</span>'
-    + '<input type="text" id="tg" class="editEnable" ' + inputThingy + ' size="5" value="00.00">'
-  + '</div>'
-+ '</div>';
+    + '<div class="conty c4">'
+      + '<span id="_zToGoal" class="toolTipclass">Weeks&nbsp;to&nbsp;target</span>'
+      + '<input type="text" id="tg" class="editEnable inputThingy inputEn" size="5" value="00.00">'
+    + '</div>'
+  + '</div>';
 }
 function addEventListeners() {
   window.addEventListener('resize', resize, false);
-  /*
-    I only want to pick up input events on the game,
-    if this doesn't work, go back to window/document
-    and use blur/focus/pause.
-  */
   window.addEventListener('contextmenu', bubbleStop, false);
   window.addEventListener('dblclick', bubbleStop, false);
   window.addEventListener(mouseWheelType, mouseWheel, false);

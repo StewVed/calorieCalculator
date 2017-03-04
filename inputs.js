@@ -178,6 +178,13 @@ function mouseDown(e) {
   }
 
   bubbleStop(e);
+  //mouse down events can go here, or point to another function
+  //look for tooltip
+  if (targ.classList.contains('toolTipclass')) {
+    tooltipVars.over = true;
+    toolTipOver(WinNo, targ.id);
+    toolTipSort(WinNo, targ.id, 1);
+  }
   //look for volume control slider
   if (targ.id.slice(0, 3) === 'vol') {
     volDown();
@@ -247,6 +254,16 @@ function mouseMove(e) {
   mouseVars.current.time = zTime;
   mouseVars.current.x = e.clientX;
   mouseVars.current.y = e.clientY;
+
+  if (targ.classList.contains('toolTipclass')) {
+    toolTipMouseMove(e);
+    tooltipVars.over = true;
+    toolTipOver(parseFloat(targ.id), targ.id);
+  } else if (tooltipVars.over && !targ.classList.contains('ttElem')) {
+    tooltipVars.over = false;
+    toolTipHide(stillthere);
+  }
+
   if (mouseVars.type === 'vol') {
     volMove();
   } else if (mouseVars.type === 'click') {
@@ -315,6 +332,16 @@ function mouseUp(e) {
       });
     }
   }
+  //tooltip stuff for touch and click support
+  if (tooltipVars.over && vPup.style.opacity > 0 && !mouseVars.start.target.classList.contains('toolTipclass')) {
+    toolTipStuffHide(mouseVars.start.target.id);
+  } else if (mouseVars.start.target.classList) {
+    if (mouseVars.start.target.classList.contains('toolTipclass')) {
+      //show tooltip immediatly
+      toolTipShowNow(e, mouseVars.start.target.id);
+    }
+  }
+
   mouseClear();
   anEvent();
 }

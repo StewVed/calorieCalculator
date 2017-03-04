@@ -7,7 +7,7 @@
 //vars for the game itself
 //put here so that I can check when the game has initialized
 var gameVars;
-var fileList = ['initialize', 'inputs', 'main', 'settings', 'sounds', 'storage', 'texts']
+var fileList = ['initialize', 'inputs', 'main', 'settings', 'sounds', 'storage', 'texts', 'toolTips']
   , isLoaded = 0
   , isUpdated = 0
   , isOffline = 0

@@ -5,12 +5,17 @@ var zAll = '<span class="B'
   , zDev = zAll + ' Or">Development: </span>'
 
 var appCL =
-  '<p class="B C">26th February 2017</p> ' +
-  '<ul><li>' + zNew + 'Made the app Open Source, and put it on GitHub.' +
+  '<p class="B C">4th March 2017</p> ' +
+  '<ul><li>' + zNew + 'Added Body-Fat calculation (US Navy 2012).' +
+  '</li><li>Tooltips not quite implemented from adapting the code from my Webtop. that is next I hope!'
+  '</li></ul>' +
+  '<hr>' +
+  '<p class="B C">3rd March 2017</p> ' +
+  '<ul><li>' + zNew + 'Made the app stand-alone, Open Source, and put it on GitHub.' +
   '</li><li>' + zDev + 'Used my latest Delevopment code from my Toddlearner project as the base, so this app can be used offline and just like a native app.' +
   '</li></ul>' +
   '<hr>' +
-  'earlier development (from a year or two ago) was as a part of my Webtop.'
+  'Earlier development (from a year or two ago) was as a part of my Webtop.'
 ;
 
 
