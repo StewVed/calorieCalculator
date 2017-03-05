@@ -5,6 +5,11 @@ var zAll = '<span class="B'
   , zDev = zAll + ' Or">Development: </span>'
 
 var appCL =
+  '<p class="B C">5th March 2017</p> ' +
+  '<ul><li>' + zNew + 'Tooltips now functional (styled like the input windows)' +
+  '</li><li>' + zImp + 'Hopefully, if the available screen area isn&apos;t high enough, the app will scale smaller until it does fit.' +
+  '</li></ul>' +
+  '<hr>' +
   '<p class="B C">4th March 2017</p> ' +
   '<ul><li>' + zNew + 'Added Body-Fat calculation (US Navy 2012).' +
   '</li><li>Tooltips not quite implemented from adapting the code from my Webtop. that is next I hope!'

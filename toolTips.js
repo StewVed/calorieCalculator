@@ -4,27 +4,32 @@ function toolTipHide() {
   }, 33);
 }
 function toolTipHide2() {
-  if (!overToolTip) {
-    toolTipStuffHide();
-    tooltipVars = {over:false, was:null, is:null}
+  if (!tooltipVars.over) {
+    tooTipTimerClear();
     vPup.innerHTML = '';
+    toolTipStuffHide();
+    tooltipVars = {opac:0, over:false, was:null, is:null, text:'', timer:null};
   }
 }
 function toolTipStuffHide() {
-  window.clearTimeout(pupTimer);
   vPup.style.opacity = vPupc.style.opacity = vPupD.style.opacity = vPupDc.style.opacity = vPupB.style.opacity = 0;
-  vPup.style.top = '-' + vPup.offsetHeight + 'px';
-  vPupc.style.top = '-' + vPupc.offsetHeight + 'px';
-  vPupc.style.width = '0px';
-  vPupD.style.top = '-' + vPupD.offsetHeight + 'px';
-  vPupDc.style.top = '-' + vPupDc.offsetHeight + 'px';
-  vPupB.style.top = '-' + vPupB.offsetHeight + 'px';
+
+  vPup.style.top = -vPup.offsetHeight + 'px';
+  vPup.style.left = -vPup.offsetWidth + 'px';
+  vPupc.style.top = -vPupc.offsetHeight + 'px';
+  vPupc.style.left = -vPupc.offsetWidth + 'px';
+  vPupD.style.top = -vPupD.offsetHeight + 'px';
+  vPupD.style.left = -vPupD.offsetWidth + 'px';
+  vPupDc.style.top = -vPupDc.offsetHeight + 'px';
+  vPupDc.style.left = -vPupDc.offsetWidth + 'px';
+  vPupB.style.top = -vPupB.offsetHeight + 'px';
+  vPupB.style.left = -vPupB.offsetWidth + 'px';
 }
 function toolTipStuffShow() {
-  vPup.style.opacity = vPupc.style.opacity = vPupD.style.opacity = vPupDc.style.opacity = 0.9;
+  vPup.style.opacity = vPupc.style.opacity = vPupD.style.opacity = 1;
 }
 function toolTipMouseMove(e) {
-  if (vPup.style.opacity == 0.9) {
+  if (vPup.style.opacity == 1) {
     toolTipSort(tooltipVars.was, true);
   }
 }
@@ -32,81 +37,89 @@ function toolTipOver(zID) {
   if (tooltipVars.is != zID) {
     var tID = zID.split('_')[1];
     tooltipVars.was = tooltipVars.is = zID;
-    ttText = '<span id="pupCapt">' + toolTips[tID] + '</span>';
-    pupTimer = window.setTimeout(function() {
-      toolTipSort(zID, false);
-    }, 400);
+    tooltipVars.text = '<span id="pupCapt">' + toolTips[tID] + '</span>';
+    if (!tooltipVars.timer) {
+      tooltipVars.timer = window.setTimeout(function() {
+        toolTipSort(zID, false);
+      }, 400);
+    }
   }
 }
 function toolTipPlace() {
-  vPupD.style.left = (mEvent.cX - vPupD.offsetWidth / 2) + 'px';
-  //that one is always the same.
-  //build it as if it fits up top...
-  vPupD.style.top = ((mEvent.cY - vPupD.offsetHeight) - WinPadding) + 'px';
-  //-(ztmpDiv.offsetHeight+vPupD.offsetHeight)
-  vPupB.style.top = (vPupD.offsetTop + WinPadding) + 'px';
-  vPupB.style.height = vPupD.offsetHeight + 'px';
-  vPup.style.top = (vPupD.offsetTop - (vPup.offsetHeight - (vPupD.offsetHeight / 1.5))) + 'px';
-  var zLeft, zWidth = document.body.offsetWidth;
-  if ((mEvent.cX + 2) + (vPup.offsetWidth / 2) > zWidth) {
-    zLeft = ((zWidth - 2) - (vPup.offsetWidth));
+  //move the tooltip to the left to make sure it has the most amount of room.
+  vPup.style.left = 0;
+  vPupD.style.left = (mouseVars.current.x - vPupD.offsetWidth / 2) + 'px';
+  var zLeft = 0
+  , zWidth = document.body.offsetWidth;
+  if ((mouseVars.current.x) + (vPup.offsetWidth / 2) > zWidth) {
+    zLeft = (zWidth  - vPup.offsetWidth);
   } else {
-    zLeft = mEvent.cX - (vPup.offsetWidth / 2);
+    zLeft = mouseVars.current.x - (vPup.offsetWidth / 2);
   }
   if (zLeft < 0) {
-    zLeft = 1;
+    zLeft = 0;
   }
   vPup.style.left = zLeft + 'px';
-  //vPupB.style.width = ;
+
+  vPupD.style.top = (mouseVars.current.y - vPupD.offsetHeight - 5) + 'px';
+  vPupB.style.top = vPupD.offsetTop + 'px';
+  vPupB.style.height = vPupD.offsetHeight + 'px';
+  var zTop = vPupD.offsetTop + (vPupD.offsetHeight * .5);
+  //debugger;
+  zTop -= vPup.offsetHeight
+  //check if there is enough room at the top to show the tooltip
+  if (zTop < 0) {
+    //try placing the tooltip below the pointer instead of above
+    vPupD.style.top = mouseVars.current.y + 5 + 'px';
+    //now place the tooltip half-on the diamond arrow:
+    zTop = vPupD.offsetTop + (vPupD.offsetHeight * .35);
+    vPupD.classList.remove('pupDB');
+    vPupD.classList.add('pupDA');
+    vPupDc.classList.remove('pupDcB');
+    vPupDc.classList.add('pupDcA');
+    vPupDc.style.opacity = 0.3;
+  }
+  else {
+    vPupD.classList.remove('pupDA');
+    vPupD.classList.add('pupDB');
+    vPupDc.classList.remove('pupDcA');
+    vPupDc.classList.add('pupDcB');
+    vPupDc.style.opacity = 0.6;
+  }
+  vPup.style.top = zTop + 'px';
+
+
   //emulate a border around the square part of the popup, which should marry up with the diamond's border :D
   vPupc.style.left = vPupB.style.left = (vPup.offsetLeft - 1) + 'px';
   vPupc.style.top = (vPup.offsetTop - 1) + 'px';
   vPupc.style.width = vPupB.style.width = vPup.offsetWidth + 'px';
   vPupc.style.height = vPup.offsetHeight + 'px';
-  //oddly +1 looks a little better.
   vPupDc.style.left = vPupD.offsetLeft + 'px';
   vPupDc.style.top = vPupD.offsetTop + 'px';
   vPupDc.style.width = vPupD.offsetWidth + 'px';
-  vPupDc.style.height = (vPupD.offsetHeight + 1) + 'px';
-  //oddly +1 looks a little better.
-  //vPupc.style.opacity = vPupD.style.opacity = vPupDc.style.opacity = 1;
-  vPupDc.style.border = '1px solid rgba(255,255,255,0.5)';
-  vPupDc.style.borderTop = '0px';
-  vPupDc.style.borderLeft = '0px';
-}
-function toolTipShow() {
-  if (tooltipVars.is == tooltipVars.was) {
-    Opac += 0.2;
-    vPup.style.opacity = Opac;
-    vPupc.style.opacity = vPupD.style.opacity = vPupDc.style.opacity = Opac - 0.2;
-    if (Opac < 0.9) {
-      pupTimer = window.setTimeout(function() {
-        toolTipShow();
-      }, 30);
-    } else {
-      toolTipStuffShow();
-      vPupB.style.opacity = 0.1;
-    }
-  } else {
-    toolTipStuffHide();
-  }
+  vPupDc.style.height = (vPupD.offsetHeight) + 'px';
 }
 function toolTipShowNow(e, zID) {
   toolTipMouseMove(e);
-  overToolTip = true;
+  tooltipVars.over = true;
   toolTipOver(zID);
   toolTipSort(zID, false);
-  window.clearTimeout(pupTimer);
+  tooTipTimerClear();
+}
+function tooTipTimerClear() {
+  window.clearTimeout(tooltipVars.timer);
+  tooltipVars.timer = null;
 }
 function toolTipSort(whereFrom, showing) {
   if (tooltipVars.is == whereFrom) {
     tooltipVars.was = whereFrom;
-    vPup.innerHTML = '<p style="margin:0;padding:0;text-align:center;">' + ttText.replace(/~#/g, '&').replace(/#Q/g, '&quot').replace(/-Q-/g, '\\"') + '</p>';
+    vPup.style.width = '100%';
+    vPup.style.left = 0;
+    vPup.innerHTML = '<p style="margin:0;padding:0;text-align:center;">' + tooltipVars.text.replace(/~#/g, '&').replace(/#Q/g, '&quot').replace(/-Q-/g, '\\"') + '</p>';
     //must be here to get around &lt; etc chars being translated into their < chars - happens (I assume) if the string the &lt is injected into is then copied.
-    toolTipAddClass(vPup);
     //make each element have the class "ttElem"
-    //ToDo:make the transparant half dependant on whether the popup is above or below the thingy :)
-    vPupD.style.background = 'linear-gradient(315deg, rgba(0,0,0,1) 36%, rgba(0,0,0,0) 40%)';
+    toolTipAddClass(vPup);
+    vPup.style.width = null;
     toolTipPlace();
     if (!showing) {
       toolTipStuffShow();

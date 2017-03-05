@@ -294,7 +294,7 @@ ul {
   width:100%;
   text-align:center;
   border:1px solid #000;
-  border-radius:.01em;
+  border-radius:.3em;
   box-sizing:border-box;
   font-size: inherit;
 }
@@ -302,5 +302,76 @@ ul {
   background:linear-gradient(#fff, #ddd);
 }
 .inputDi{
-  background:linear-gradient(#eee, #ccc);
+  background:linear-gradient(#ccc, #bbb);
+}
+
+#PopUp {
+  position: absolute;
+  top: 64px;
+  left: 68px;
+  border-radius: 2px;
+  background-color: #000;
+  border: 1px solid rgba(223,219,210,0.33);
+  padding: 6px;
+  box-shadow: 0px 0px 8px #000;
+  visibility: hidden;
+}
+
+#pupB {
+  position: absolute;
+  z-index: 96;
+  background: black;
+  opacity: 0;
+}
+
+#pup {
+  position: absolute;
+  border-radius: 0.6em;
+  padding: .6em;
+  z-index: 98;
+  background:linear-gradient(hsla(0, 0%, 100%, .9), hsla(0, 0%, 88%, .9));
+  margin:.3em;
+  opacity: 0;
+  transform: opacity .4s;
+}
+
+#pupc {
+  z-index: 97;
+  position: absolute;
+  border-radius: .6em;
+  box-shadow: 0px 2px 10px black;
+  opacity: 0;
+  transform: opacity .4s;
+}
+
+#pupD {
+  z-index: 99;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  transform: opacity .4s;
+}
+.pupDA {
+  transform: rotate(45deg);
+  background: linear-gradient(-45deg, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 100%, .9) 50%);
+}
+.pupDB {
+  transform: rotate(45deg);
+  background: linear-gradient(-45deg, hsla(0, 0%, 88%, .9) 50%, hsla(0, 0%, 100%, 0) 50%);
+}
+#pupDc {
+  position: absolute;
+  z-index: 96;
+  width: 19px;
+  height: 19px;
+  transform: rotate(45deg);
+  opacity: 0;
+  transform: opacity .4s;
+}
+.pupDcA {
+  box-shadow: -1px -1px 8px black;
+}
+.pupDcB {
+  box-shadow: 2px 2px 8px black;
 }

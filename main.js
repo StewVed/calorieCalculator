@@ -54,7 +54,7 @@ function resize() {
       and since that would be done by the browser, I expect
       it to be more efficient than my own dodgy scaling code!
     */
-    document.getElementById('cont').style.fontSize = window.innerWidth * .002 + 'em';
+    document.getElementById('cont').style.fontSize = vPup.style.fontSize = window.innerWidth * .002 + 'em';
   /*
     var gWidth = document.body.offsetWidth;
     var gHeight = (gWidth / (16 / 9));
@@ -67,8 +67,18 @@ function resize() {
   */
     //when the available screen is not 16/9, center the game.
     //this should default as 0px for both generaly.
-    document.getElementById('cont').style.top = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth);
+    var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
+    var zFont = window.innerWidth * .002;
+
+    while (zTop < 0) {
+      zFont *= .9;
+      document.getElementById('cont').style.fontSize = vPup.style.fontSize = zFont + 'em';
+      zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
+    }
+
+    zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
+    document.getElementById('cont').style.top = zTop + 'px'
+    document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth) + 'px';
 
   }
 
@@ -80,7 +90,7 @@ function resize() {
   }
 }
 function resizeCenter(a, b) {
-  return Math.round((a / 2) - (b / 2)) + 'px';
+  return Math.round((a / 2) - (b / 2));
 }
 
 // fullscreen handling from webtop then simplified for this project...

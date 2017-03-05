@@ -114,16 +114,15 @@ function sw_installed() {
 }
 
 function upNotCheck(msg) {
-  if (gameVars) {
-    if (gameVars.tWoz) {
-      //the main game has initialized, so show the message.
-      if (msg.length < 3) {
-        if (msg === 'i') {
-          upNotOpen('You can use this webapp while offline!','');
-        }
-        else if (msg === 'u') {
-          upNotOpen('app Updated!<br>scroll up to see what&apos;s new.', appCL);
-        }
+  if (document.getElementById('cont')) {
+    //the main content has been added to the document, so it
+    //is safe to add the 'toast' popup now.
+    if (msg.length < 3) {
+      if (msg === 'i') {
+        upNotOpen('You can use this webapp while offline!','');
+      }
+      else if (msg === 'u') {
+        upNotOpen('app Updated!<br>scroll up to see what&apos;s new.', appCL);
       }
     }
   }

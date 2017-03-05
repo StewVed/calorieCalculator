@@ -182,8 +182,8 @@ function mouseDown(e) {
   //look for tooltip
   if (targ.classList.contains('toolTipclass')) {
     tooltipVars.over = true;
-    toolTipOver(WinNo, targ.id);
-    toolTipSort(WinNo, targ.id, 1);
+    toolTipOver(targ.id);
+    toolTipSort(targ.id, 1);
   }
   //look for volume control slider
   if (targ.id.slice(0, 3) === 'vol') {
@@ -192,14 +192,6 @@ function mouseDown(e) {
   anEvent();
 }
 function mouseMove(e) {
-  if (mouseVars.current.target) {
-    if (mouseVars.current.target.classList.contains('editEnable')) {
-      return;
-    }
-  }
-
-  bubbleStop(e);
-
   //make sure that only one mouse movement is done per frame to reduce cpu usage.
   if (mouseVars.moved) {
     return;
@@ -208,12 +200,25 @@ function mouseMove(e) {
   window.requestAnimationFrame(function() {
     mMoved = 0;
   });
+
+
+  var zTime = new Date().getTime();
+
   var targ = findTarget(e);
   if (targ.id.slice(0, 4) === 'game') {
     gameVars.gameObjectLast = gameVars.gameObject;
     gameVars.gameObject = findObject(e);
   }
-  var zTime = new Date().getTime();
+
+  if (mouseVars.current.target) {
+    if (mouseVars.current.target.classList.contains('editEnable')) {
+      mouseVars.current = {target:targ, time:zTime, x:e.clientX, y:e.clientY};
+
+      return;
+    }
+  }
+
+  bubbleStop(e);
   //check for onmouseout/onmousein events!
   if (gameVars.gameObjectLast !== gameVars.gameObject) {
     if (mouseVars.type === 'click') {
@@ -250,18 +255,22 @@ function mouseMove(e) {
   }
 
   //update the mouse object with the current stuff:
+  /*
   mouseVars.current.target  = targ;
   mouseVars.current.time = zTime;
   mouseVars.current.x = e.clientX;
   mouseVars.current.y = e.clientY;
+  */
+  mouseVars.current = {target:targ, time:zTime, x:e.clientX, y:e.clientY};
+
 
   if (targ.classList.contains('toolTipclass')) {
+    toolTipOver(targ.id);
     toolTipMouseMove(e);
     tooltipVars.over = true;
-    toolTipOver(parseFloat(targ.id), targ.id);
   } else if (tooltipVars.over && !targ.classList.contains('ttElem')) {
     tooltipVars.over = false;
-    toolTipHide(stillthere);
+    toolTipHide();
   }
 
   if (mouseVars.type === 'vol') {
@@ -276,6 +285,12 @@ function mouseMove(e) {
   if (mouseVars.button) {
     anEvent();
   }
+}
+function mouseMoveVarsUpdate(targ) {
+  mouseVars.current.target  = targ;
+  mouseVars.current.time = zTime;
+  mouseVars.current.x = e.clientX;
+  mouseVars.current.y = e.clientY;
 }
 function mouseMoveEnter(targ) {/*
    * use this for hovering over things.
@@ -386,7 +401,6 @@ function mouseWheelEvents(targ, d) {
 }
 
 function mouseClick() {
-  //debugger;
   var targID = mouseVars.current.target.id;
   if (targID === 'toastClose') {
     upNotClose();
@@ -433,7 +447,6 @@ function touchDown(e) {
     if (touchVars[zID].target) {
       if (zID == 0) {
         if (!touchVars[zID].target.classList.contains('editEnable')) {
-          //debugger;
           bubbleStop(e);
           //should change the mouse cursor if needed.
           mouseDown(touchVars[zID]);
@@ -470,7 +483,6 @@ function touchMove(e) {
   }
 }
 function touchUp(e) {
-  //debugger;
   var cTouches = e.changedTouches;
   //new array for all current events
   for (var x = 0; x < cTouches.length; x++) {
@@ -545,7 +557,6 @@ function scroller(targ, toScrollBy) {
   var tcTop = document.getElementById('toastContainer').offsetTop;
   var longest = document.body.offsetHeight - (targ.clientHeight + tcTop);//don't include border on targ.
 
-  //debugger;
   if (longest > zTop) {
     zTop = longest;
   }

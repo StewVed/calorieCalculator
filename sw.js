@@ -1,4 +1,4 @@
-var zAppCache = 'calorieCalc-2017-3-4';
+var zAppCache = 'calorieCalc-2017-3-5';
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppCache).then(function(cache) {
     return cache.addAll([
