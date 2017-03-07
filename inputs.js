@@ -91,8 +91,8 @@ function keyNum(e) {
   anEvent();
 }
 function keyDown(e) {
+  var theKey = keyNum(e);
   if (!document.activeElement.classList.contains('editEnable')) {
-    var theKey = keyNum(e);
     if (keysIgnore.indexOf(theKey) === -1) {
       bubbleStop(e);
       if (isFinite(keysCurrent[theKey])) {
@@ -102,6 +102,13 @@ function keyDown(e) {
       //simply add the newly pressed key into the WinKeys array.
       keyVars.push(theKey);
       anEvent();
+    }
+  }
+  else {
+    //if user presses Return or Tab, remove input focus.
+    if (theKey == 13 || theKey == 9) {
+      bubbleStop(e);
+      document.activeElement.blur();
     }
   }
 }
@@ -115,8 +122,8 @@ function keyRedefine(theKey) {
   }
 }
 function keyUp(e) {
+  var theKey = keyNum(e);
   if (!document.activeElement.classList.contains('editEnable')) {
-    var theKey = keyNum(e);
     if (keysIgnore.indexOf(theKey) === -1) {
       bubbleStop(e);
       while (keyVars.indexOf(theKey) != -1) {
@@ -125,6 +132,7 @@ function keyUp(e) {
       }
       anEvent();
     }
+
   }
   else {
     cc_calc();
@@ -213,7 +221,6 @@ function mouseMove(e) {
   if (mouseVars.current.target) {
     if (mouseVars.current.target.classList.contains('editEnable')) {
       mouseVars.current = {target:targ, time:zTime, x:e.clientX, y:e.clientY};
-
       return;
     }
   }
@@ -244,25 +251,8 @@ function mouseMove(e) {
     scrollVars.x = mouseVars.current.x;
     scrollVars.y = mouseVars.current.y;
   }
-  else if (mouseVars.start.target) {
-    if (mouseVars.start.target.classList.contains('letScroll')) {
-      mouseVars.type = 'scrollable';
-      mouseVars.start.target = document.getElementById('toastPopup');
-      scrollVars.time = mouseVars.current.time;
-      scrollVars.x = mouseVars.current.x;
-      scrollVars.y = mouseVars.current.y;
-    }
-  }
 
-  //update the mouse object with the current stuff:
-  /*
-  mouseVars.current.target  = targ;
-  mouseVars.current.time = zTime;
-  mouseVars.current.x = e.clientX;
-  mouseVars.current.y = e.clientY;
-  */
   mouseVars.current = {target:targ, time:zTime, x:e.clientX, y:e.clientY};
-
 
   if (targ.classList.contains('toolTipclass')) {
     toolTipOver(targ.id);
@@ -279,6 +269,17 @@ function mouseMove(e) {
     if (((mouseVars.start.x + 25) < e.clientX) || ((mouseVars.start.x - 25) > e.clientX) || ((mouseVars.start.y + 25) < e.clientY) || ((mouseVars.start.y - 25) > e.clientY)) {
       mouseVars.type = 'drag';
       window.clearTimeout(mouseVars.clickTimer);
+    }
+  }
+
+  if (mouseVars.type === 'drag' && mouseVars.start.target) {
+    if (mouseVars.start.target.classList.contains('letScroll')) {
+      mouseVars.type = 'scrollable';
+      //there is currently only one scrolling element at the moment.
+      mouseVars.start.target = document.getElementById('toastPopup');
+      scrollVars.time = mouseVars.current.time;
+      scrollVars.x = mouseVars.current.x;
+      scrollVars.y = mouseVars.current.y;
     }
   }
   //only render is a button is pressed... like if the user is dragging.
@@ -312,6 +313,10 @@ function mouseUp(e) {
   if (mouseVars.current.target.classList.contains('editEnable')) {
     return;
   }
+  //if the pointer is not on an input, take the focus off of
+  //the focused element. This should remove focus from input elements
+  //when the user clicks off of them.
+  document.activeElement.blur();
 
   bubbleStop(e);
   //do any mouseup stuff here, eg. flinging or animated panning

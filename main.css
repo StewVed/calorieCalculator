@@ -118,6 +118,7 @@ ul {
   position: absolute;
   padding: .2em .5em .2em .4em;
   line-height: 125%;
+  background-color: hsla(0, 0%, 100%, .5);
   border-bottom: 2px solid hsl(210, 100%, 50%);
   border-right: 2px solid hsl(210, 100%, 50%);
   font-size: 125%;
@@ -293,16 +294,19 @@ ul {
   padding:.2em;
   width:100%;
   text-align:center;
-  border:1px solid #000;
+  border:1px solid black;
   border-radius:.3em;
   box-sizing:border-box;
   font-size: inherit;
 }
 .inputEn{
-  background:linear-gradient(#fff, #ddd);
+  background: linear-gradient(hsl(0, 0%, 100%), hsl(0, 0%, 80%))
 }
 .inputDi{
-  background:linear-gradient(#ccc, #bbb);
+  background: linear-gradient(hsl(0, 0%, 85%), hsl(0, 0%, 70%))
+}
+.inputNo{
+  background: linear-gradient(hsl(0, 100%, 90%), hsl(0, 100%, 80%));
 }
 
 #PopUp {
@@ -310,10 +314,10 @@ ul {
   top: 64px;
   left: 68px;
   border-radius: 2px;
-  background-color: #000;
+  background-color: black;
   border: 1px solid rgba(223,219,210,0.33);
   padding: 6px;
-  box-shadow: 0px 0px 8px #000;
+  box-shadow: 0px 0px 8px black;
   visibility: hidden;
 }
 
@@ -326,11 +330,13 @@ ul {
 
 #pup {
   position: absolute;
+  box-sizing: border-box;
+  left: -50px;
   border-radius: 0.6em;
   padding: .6em;
   z-index: 98;
   background:linear-gradient(hsla(0, 0%, 100%, .9), hsla(0, 0%, 88%, .9));
-  margin:.3em;
+  margin: .3em;
   opacity: 0;
   transform: opacity .4s;
 }
@@ -347,8 +353,8 @@ ul {
 #pupD {
   z-index: 99;
   position: absolute;
-  width: 18px;
-  height: 18px;
+  padding: 1em;
+  left: -1em;
   opacity: 0;
   transform: opacity .4s;
 }
@@ -365,6 +371,7 @@ ul {
   z-index: 96;
   width: 19px;
   height: 19px;
+  left: -20px;
   transform: rotate(45deg);
   opacity: 0;
   transform: opacity .4s;

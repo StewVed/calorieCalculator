@@ -54,7 +54,8 @@ function resize() {
       and since that would be done by the browser, I expect
       it to be more efficient than my own dodgy scaling code!
     */
-    document.getElementById('cont').style.fontSize = vPup.style.fontSize = window.innerWidth * .002 + 'em';
+    //document.getElementById('cont').style.fontSize = vPup.style.fontSize = window.innerWidth * .002 + 'em';
+    document.body.style.fontSize = window.innerWidth * .002 + 'em';
   /*
     var gWidth = document.body.offsetWidth;
     var gHeight = (gWidth / (16 / 9));
@@ -146,44 +147,51 @@ For example:
 
 optimal waist measurement is half your height I heard too.
 */
-  var zWeight
-  , zHeight
+  var zWeight = parseFloat(document.getElementById('w').value)
+  , zHeight = parseFloat(document.getElementById('h').value)
   , zSex = parseFloat(document.getElementById('m').value)
   , zKg = parseInt(document.getElementById('kg').value, 10)
   , zCm = parseInt(document.getElementById('cm').value, 10)
-  , zAge = parseFloat(document.getElementById('a').value)
-  //convert lb to kg, inch to cm:
-  if (zKg) {
-    zWeight = parseFloat(document.getElementById('w').value);
-  } else {
+  , zNow = new Date().getTime()
+  , zThen = new Date(document.getElementById('a').value).getTime()
+  , zAge = (zNow - zThen) / 31556908800 // (86,400,000 × 365.242) milliseconds – one year (Source: https://en.wikipedia.org/wiki/Millisecond)
+  ;
+
+  //convert lb to kg, inch to cm if needed:
+  if (!zKg)  {
     zWeight = parseFloat(document.getElementById('w').value) / 2.20462262184877566540;
   }
-  if (zCm) {
-    zHeight = parseFloat(document.getElementById('h').value);
-  } else {
+  if (!zCm)  {
     zHeight = parseFloat(document.getElementById('h').value) / 0.39370078740157482544;
   }
-  if (isNaN(zHeight) || isNaN(zWeight) || isNaN(zAge)) {
+
+  if (isNaN(zHeight) || isNaN(zWeight) || isNaN(zNow) || isNaN(zThen) || isNaN(zAge)) {
     document.getElementById('c').value = document.getElementById('b').value = document.getElementById('iW').value = document.getElementById('d').value = document.getElementById('cl').value = document.getElementById('tl').value = document.getElementById('tg').value = 0;
     if (isNaN(zHeight)) {
-      document.getElementById('h').style.background = 'linear-gradient(#fbb, #eaa)';
+      cc_changeInputBackColor('h', 'inputEn', 'inputNo');
     } else {
-      document.getElementById('h').style.background = 'linear-gradient(#fff, #eee)';
+      cc_changeInputBackColor('h', 'inputNo', 'inputEn');
     }
     if (isNaN(zWeight)) {
-      document.getElementById('w').style.background = 'linear-gradient(#fbb, #eaa)';
+      cc_changeInputBackColor('w', 'inputEn', 'inputNo');
     } else {
-      document.getElementById('w').style.background = 'linear-gradient(#fff, #eee)';
+      cc_changeInputBackColor('w', 'inputNo', 'inputEn');
     }
-    if (isNaN(zAge)) {
-      document.getElementById('a').style.background = 'linear-gradient(#fbb, #eaa)';
+    if (isNaN(zNow) || isNaN(zThen) || isNaN(zAge)) {
+      cc_changeInputBackColor('a', 'inputEn', 'inputNo');
     } else {
-      document.getElementById('a').style.background = 'linear-gradient(#fff, #eee)';
+      cc_changeInputBackColor('a', 'inputNo', 'inputEn');
     }
     return;
   } else {
-    document.getElementById('h').style.background = document.getElementById('w').style.background = document.getElementById('a').style.background = 'linear-gradient(#fff, #eee)';
+    cc_changeInputBackColor('h', 'inputNo', 'inputEn');
+    cc_changeInputBackColor('w', 'inputNo', 'inputEn');
+    cc_changeInputBackColor('a', 'inputNo', 'inputEn');
   }
+
+  //let the user know their age as a double-check:
+  document.getElementById('_zDob').innerHTML = 'DOB (' + zAge.toFixed(2) + 'y)'
+
   //using REE = 9.99 x weight + 6.25 x height - 4.92 x age + 166 x sex (males, 1; females, 0) - 161
   //document.getElementById('c').value =
   //parseInt((zWeight * 9.99) + (zHeight * 6.25) - (zAge * 4.92) + ((zSex * 166) - 161), 10) + parseInt(document.getElementById('add').value, 10)
@@ -241,7 +249,7 @@ optimal waist measurement is half your height I heard too.
   totCals += ((BMRperH * ha) * 8);
 
   //if this isn't the first time, save the values now:
-  if (document.getElementById('c').value) {
+  if (document.getElementById('c').value !== '0000') {
     cc_dataSave();
   }
   //show the maintenance calories:
@@ -315,6 +323,11 @@ let's assume that the calculation works as intended with not extra parentheses!!
   //amount of kg to lose to get to the ideal BMI
   document.getElementById('tl').value = zToGain.toFixed(2);
 }
+function cc_changeInputBackColor(zID, zRem, zAdd) {
+  var zElem = document.getElementById(zID);
+  zElem.classList.remove(zRem);
+  zElem.classList.add(zAdd);
+}
 function cc_dataLoad() {
   var dataToLoad = storageLoad('Calorie Calculator')
   var LSsplit1;
@@ -376,7 +389,6 @@ function cc_dataSave() {
   storageSave('Calorie Calculator', dataToSave);
 }
 function cc_mClick(zButton) {
-  //debugger;
   var zButtonID = zButton.id;
   if (zButtonID === 'm') {
     cc_swapButton('m', 'f');

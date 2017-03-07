@@ -5,6 +5,18 @@ var zAll = '<span class="B'
   , zDev = zAll + ' Or">Development: </span>'
 
 var appCL =
+  '<p class="B C">7th March 2017</p> ' +
+  '<ul><li>' + zNew + 'Date Of Birth implemented for age. This makes for more accurate age, since you no longer have to keep updating it yourself as time goes by.' +
+  '</li><li>' + zNew + 'As a little bonus and double check, your calculated age is shown by DOB. to 2 decimal points' +
+  '</li><li>' + zNew + 'Finally got round to making the app it&apos;s own Favicon!' +
+  '</li><li>' + zImp + 'The settings <q>hamburger</q> button now has an opaque background, so it can be senn more easily.' +
+  '</li><li>' + zImp + 'font scaling is back to being the entire app, including <q>toast</q> popups, and settings.' +
+  '</li><li>' + zImp + 'make the gradiants more pronounced on the inputs. (rounded backgrounds).' +
+  '</li><li>' + zImp + 'A bit more work to the toolTip system, and also improved tooltip descriptions here and there.' +
+  '</li><li>' + zBug + 'fixed an issue with the <q>toast</q> popup, where we could not click any buttons.' +
+  '</li><li>' + zDev + 'Tab and Return/enter should now remove input focus. Hopefully this will close on-screen keyboards on mobile devices.' +
+  '</li></ul>' +
+  '<hr>' +
   '<p class="B C">5th March 2017</p> ' +
   '<ul><li>' + zNew + 'Tooltips now functional (styled like the input windows)' +
   '</li><li>' + zImp + 'Hopefully, if the available screen area isn&apos;t high enough, the app will scale smaller until it does fit.' +

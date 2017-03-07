@@ -22,9 +22,76 @@
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <title
-     id="title4684">Toddlearner Favicon</title>
+     id="title4684">CalorieCalculator Favicon</title>
   <defs
-     id="defs4" />
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6076">
+      <stop
+         style="stop-color:#505050;stop-opacity:1"
+         offset="0"
+         id="stop6078" />
+      <stop
+         style="stop-color:#c8c8c8;stop-opacity:0.50196081"
+         offset="1"
+         id="stop6080" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6070"
+       inkscape:collect="always">
+      <stop
+         id="stop6072"
+         offset="0"
+         style="stop-color:#c8c8c8;stop-opacity:1" />
+      <stop
+         id="stop6074"
+         offset="1"
+         style="stop-color:#505050;stop-opacity:0.50196081" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3581">
+      <stop
+         style="stop-color:#cccccc;stop-opacity:1;"
+         offset="0"
+         id="stop3583" />
+      <stop
+         style="stop-color:#cccccc;stop-opacity:0;"
+         offset="1"
+         id="stop3585" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3581"
+       id="linearGradient3587"
+       x1="34.107143"
+       y1="1028.0765"
+       x2="28.035715"
+       y2="1008.9694"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.058484,0,0,1.0584839,-7.9764312,-79.937448)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6070"
+       id="linearGradient6036"
+       x1="52.906746"
+       y1="1042.9644"
+       x2="13.49238"
+       y2="995.99231"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0000074,0,0,1.0000075,2.4722992e-6,-0.00786502)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6076"
+       id="linearGradient6082"
+       x1="54.421967"
+       y1="1037.5887"
+       x2="17.046324"
+       y2="995.16229"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0000074,0,0,1.0000075,2.4722992e-6,-0.00786502)" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -32,9 +99,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="26.065886"
-     inkscape:cy="15.873456"
+     inkscape:zoom="7.9195959"
+     inkscape:cx="26.765346"
+     inkscape:cy="30.812894"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -55,8 +122,8 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Toddlearner Favicon</dc:title>
-        <dc:date>2016-12-18</dc:date>
+        <dc:title>CalorieCalculator Favicon</dc:title>
+        <dc:date>2017-03-07</dc:date>
         <dc:creator>
           <cc:Agent>
             <dc:title>Stewart Robinson (StewVed)</dc:title>
@@ -70,71 +137,126 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-988.3622)">
+     transform="translate(0,-988.3622)"
+     style="display:inline">
     <ellipse
-       style="fill:#416eff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.88235294"
-       id="path4686"
-       cx="15.13083"
-       cy="1037.7605"
-       rx="15.13083"
-       ry="14.601772"
+       style="opacity:0.98999999;fill:url(#linearGradient6082);fill-opacity:1;fill-rule:evenodd;stroke:url(#linearGradient6036);stroke-width:1.05800784;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path3373"
+       cx="32.000248"
+       cy="1020.3619"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       rx="31.470995"
+       ry="31.470997" />
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.04795647px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 3.3655176,1020.4805 5.2903239,-0.01"
+       id="path3422-6"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:44.38551712px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-1.521999"
-       y="1128.2136"
-       id="text4708"
-       sodipodi:linespacing="125%"
-       transform="scale(1.1087314,0.9019317)"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90"><tspan
-         sodipodi:role="line"
-         id="tspan4710"
-         x="-1.521999"
-         y="1128.2136">1</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:42.97360229px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#e4e100;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="30.859802"
-       y="1125.8905"
-       id="text4712"
-       sodipodi:linespacing="125%"
-       transform="scale(1.06987,0.93469304)"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90"><tspan
-         sodipodi:role="line"
-         id="tspan4714"
-         x="30.859802"
-         y="1125.8905">A</tspan></text>
-    <rect
-       style="fill:#008000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.88235294"
-       id="rect4716"
-       width="13.285387"
-       height="12.820856"
-       x="34.010044"
-       y="1003.7856"
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.05076039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 31.410433,990.30948 0.0077,5.29083"
+       id="path3422-2"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
-    <use
-       id="use4718"
-       xlink:href="#rect4716"
-       x="0"
-       y="0"
-       width="100%"
-       height="100%"
-       transform="translate(16.704569,0.09414711)"
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.04795647px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 56.289724,1020.4807 5.290322,-0.011"
+       id="path3422-6-5"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
-    <use
-       id="use4720"
-       xlink:href="#rect4716"
-       x="0"
-       y="0"
-       width="100%"
-       height="100%"
-       transform="translate(8.952083,-15.423284)"
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.05076039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 18.334522,994.56189 2.381462,4.72457"
+       id="path3422-2-6"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.05076039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 7.8557479,1005.0818 4.2484941,3.1533"
+       id="path3422-2-0"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.05076039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 57.274216,1005.0756 -4.239268,3.1656"
+       id="path3422-2-03"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ff0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.05076039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 45.470043,995.21991 -2.367645,4.73149"
+       id="path3422-2-5"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="display:inline;fill:url(#linearGradient3587);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.03441179px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 31.319248,1020.6307 25.309652,997.03353"
+       id="path3418"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <ellipse
+       style="display:inline;fill:#000000"
+       id="path3420"
+       cx="31.414289"
+       cy="1020.4753"
+       rx="2.6462102"
+       ry="2.64621"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="spiral"
+       style="display:inline;fill:#9d831b;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path5999"
+       sodipodi:cx="33.39286"
+       sodipodi:cy="41.05357"
+       sodipodi:expansion="2.76"
+       sodipodi:revolution="0.21236233"
+       sodipodi:radius="5.6843252"
+       sodipodi:argument="-21.519838"
+       sodipodi:t0="0"
+       d="m 33.39286,41.05357 c -1.691633,-0.862082 0.838926,-4.936462 1.322593,-5.528318"
+       transform="matrix(2.1290218,0,0,1.3988516,-38.165029,973.17056)"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <ellipse
+       style="display:inline;fill:#ff0000;fill-opacity:1"
+       id="path5956"
+       cx="29.212273"
+       cy="1039.3472"
+       rx="8.4111681"
+       ry="10.20681"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <ellipse
+       style="display:inline;fill:#ff0000;fill-opacity:1"
+       id="path5956-0"
+       cx="35.92231"
+       cy="1039.3472"
+       rx="8.4111681"
+       ry="10.20681"
+       inkscape:export-filename="C:\Users\StewVed\Documents\GitHub\toddlearner\favicon.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
   </g>
