@@ -29,7 +29,7 @@ if ('serviceWorker' in navigator) {
   //debugger;
   if (navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.addEventListener('statechange', function(e) {
-      console.log('navigator.serviceWorker.controller statechange: ' + e.target.state);
+      //console.log('navigator.serviceWorker.controller statechange: ' + e.target.state);
       if (e.target.state === 'activated') {
         //perhaps this one will fire?!?
         upNotCheck('u');
@@ -41,7 +41,7 @@ if ('serviceWorker' in navigator) {
     //if there is an active serviceWorker, listen for changes in it's state
     if (registration.active) {
       registration.active.addEventListener('statechange', function(e) {
-        console.log('active serviceWorker statechange: ' + e.target.state);
+        //console.log('active serviceWorker statechange: ' + e.target.state);
         //this never seems to fire... outside of devTools!
         if (e.target.state === 'activated') {
           upNotCheck('u');
@@ -57,12 +57,12 @@ if ('serviceWorker' in navigator) {
     */
     if (registration.waiting) {
       if (registration.active && registration.waiting.state === 'installed') {
-        console.log('waiting ServiceWorker installed and still waiting to activate.');
+        //console.log('waiting ServiceWorker installed and still waiting to activate.');
         //inform user that a hard-reload is needed, not just F5
         upNotCheck('Waiting to update...<br>Please close then re-open app for new version.');
       }
       registration.waiting.addEventListener('statechange', function(e) {
-        console.log('waiting serviceWorker statechange: ' + e.target.state);
+        //console.log('waiting serviceWorker statechange: ' + e.target.state);
         if (e.target.state === 'activated') {
           //this never seems to fire... outside of devTools!
           upNotCheck('u');
@@ -80,7 +80,6 @@ if ('serviceWorker' in navigator) {
       installing worker changes
     */
     registration.addEventListener('updatefound', function() {
-      console.log('registration serviceWorker update Found');
       //Listen for changes in the installing serviceWorker's state
       //registration.installing.addEventListener('statechange', swRI);
       registration.installing.addEventListener('statechange', function(e){
@@ -88,29 +87,32 @@ if ('serviceWorker' in navigator) {
         //when it goes from the installing, to waiting, then to active one.
         //if not, addEventListener for waiting and active when required.
         //yeah... seems to keep the eventlistener through it all.
-        console.log('registration serviceWorker statechange: ' + e.target.state);
         if (e.target.state === 'installed') {
           if (registration.active) {
-            console.log('new ServiceWorker installed and waiting to activate.');
             sw_installed()
+            //console.log('new ServiceWorker installed and waiting to activate.');
           }
         }
         else if (e.target.state === 'activated') {
-          console.log('new ServiceWorker activated from install');
           upNotCheck('i')
+          //console.log('new ServiceWorker activated from install');
         }
-      })
+        //console.log('registration serviceWorker statechange: ' + e.target.state);
+      });
+      //console.log('registration serviceWorker update Found');
     });
 
-    console.log('ServiceWorker registered')
+    //console.log('ServiceWorker registered');
   }).catch(function(err) {
     console.log('ServiceWorker registration failed: ', err)
   });
 }
 function sw_installed() {
   //New serviceWorker's cache has downloaded, and it is waiting to activate
-  console.log('Service Worker update downloaded!');
-  upNotCheck('Update downloaded.<br>Please restart app for new version.');
+  //console.log('Service Worker update downloaded!');
+  upNotCheck(
+    'Update downloaded.<br>Please restart app for new version.'
+  );
 }
 
 function upNotCheck(msg) {
@@ -122,14 +124,20 @@ function upNotCheck(msg) {
         upNotOpen('You can use this webapp while offline!','');
       }
       else if (msg === 'u') {
-        upNotOpen('app Updated!<br>scroll up to see what&apos;s new.', appCL);
+        upNotOpen(
+          'app Updated!<br>scroll up to see what&apos;s new.'
+          , appCL
+        );
       }
+    }
+    else {
+      upNotOpen(msg, '');
     }
   }
   else {
     //not yet initialized, so wait a bit then check again.
     window.setTimeout(function() {
-      upNotCheck(msg)
+      upNotCheck(msg);
     }, 200);
   }
 }
@@ -137,6 +145,10 @@ function upNotOpen(msg, extras) {
   if (document.getElementById('toastContainer')) {
     //for the moment, only allow one popup.
     document.body.removeChild(document.getElementById('toastContainer'));
+    /*
+      When I get round to it, I could make each toast popup
+      go above the last popup.
+    */
   }
 
   var newWindow = document.createElement('div');

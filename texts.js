@@ -5,6 +5,24 @@ var zAll = '<span class="B'
   , zDev = zAll + ' Or">Development: </span>'
 
 var appCL =
+  '<p class="B C">TODO</p> ' +
+  '<ul><li>Find out why the app does not display update messages. (comment out console.logs in case they were getting in the way?)' +
+  '</li><li>Tooltips should be scrollable if the content exceedes the available space.' +
+  '</li><li>Tooltips should be placed on whichever half has more space.' +
+  '</li><li>Maybe remove BMI, and Ideal weight as they are only accurate for <q>average</q> body compositions.' +
+  '</li><li>Add Fat-Free Mass Index.' +
+  '</li><li>Ideally, I would like to use FFMI and BF% to work out what ideal weight might be. Not sure whether any studies/algorythms exist for that (yet)' +
+  '</li></ul>' +
+  '<hr>' +
+  '<p class="B C">8th March 2017</p> ' +
+  '<ul><li>' + zImp + 'Tooltip tweaked quite a bit, and it&apos;s smooth fade-in was re-added.' +
+  '</li><li>' + zImp + 'Greyed out Hips input for males as hips measurement is only used for females.' +
+  '</li><li>' + zBug + 'Ignored resize calls when an input is focused. (likely caused from device&apos;s on-screen keyboards).' +
+  '</li><li>' + zBug + 'Added the Neck, Waist, and Hips inputs to the inch/cm converter (fool... forgot!).' +
+  '</li><li>' + zBug + 're-added code for letting the user know if the app has been updated, and user will see the new version after restarting the app.' +
+  '</li><li>' + zBug + 'app font can get bigger again after not enough hight makes the font smaller.' +
+  '</li></ul>' +
+  '<hr>' +
   '<p class="B C">7th March 2017</p> ' +
   '<ul><li>' + zNew + 'Date Of Birth implemented for age. This makes for more accurate age, since you no longer have to keep updating it yourself as time goes by.' +
   '</li><li>' + zNew + 'As a little bonus and double check, your calculated age is shown by DOB. to 2 decimal points' +

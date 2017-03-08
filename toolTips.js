@@ -13,10 +13,10 @@ function toolTipHide2() {
 }
 function toolTipStuffHide() {
   vPup.style.top = -(vPup.offsetHeight + 20) + 'px';
-  vPupc.style.top = -vPupc.offsetHeight + 'px';
-  vPupD.style.top = -vPupD.offsetHeight + 'px';
-  vPupDc.style.top = -vPupDc.offsetHeight + 'px';
-  vPupB.style.top = -vPupB.offsetHeight + 'px';
+  vPupc.style.top = -(vPupc.offsetHeight + 20) + 'px';
+  vPupD.style.top = -(vPupD.offsetHeight + 20) + 'px';
+  vPupDc.style.top = -(vPupDc.offsetHeight + 20) + 'px';
+  vPupB.style.top = -(vPupB.offsetHeight + 20) + 'px';
   vPup.style.opacity = vPupc.style.opacity = vPupD.style.opacity = vPupDc.style.opacity = vPupB.style.opacity = 0;
 }
 function toolTipStuffShow() {
@@ -42,31 +42,39 @@ function toolTipOver(zID) {
 function toolTipPlace() {
   //move the tooltip to the left to make sure it has the most amount of room.
   vPup.style.left = 0;
-  vPupD.style.left = (mouseVars.current.x - vPupD.offsetWidth / 2) + 'px';
   var zLeft = 0
   , zWidth = document.body.offsetWidth;
-  if ((mouseVars.current.x) + (vPup.offsetWidth * .33) > zWidth) {
+  if ((mouseVars.current.x - (vPup.offsetWidth * .5)) > zWidth) {
     zLeft = (zWidth  - vPup.offsetWidth);
   } else {
-    zLeft = mouseVars.current.x - (vPup.offsetWidth * .66);
+    zLeft = mouseVars.current.x - (vPup.offsetWidth * .5);
+  }
+  if (zLeft + vPup.offsetWidth > zWidth) {
+    zLeft = zLeft = (zWidth  - vPup.offsetWidth);
   }
   if (zLeft < 0) {
     zLeft = 0;
   }
   vPup.style.left = zLeft + 'px';
+  zLeft = (mouseVars.current.x - vPupD.offsetWidth * .5);
+  if (zLeft < (vPup.offsetLeft + vPupD.offsetWidth * .35)) {
+    zLeft = (vPup.offsetLeft + vPupD.offsetWidth * .35);
+  } else if (zLeft > ((vPup.offsetLeft + vPup.offsetWidth) - vPupD.offsetWidth - vPupD.offsetWidth * .35)) {
+    zLeft = (vPup.offsetLeft + vPup.offsetWidth) - vPupD.offsetWidth - vPupD.offsetWidth * .35;
+  }
 
-  vPupD.style.top = (mouseVars.current.y - vPupD.offsetHeight - 5) + 'px';
-  vPupB.style.top = vPupD.offsetTop + 'px';
-  vPupB.style.height = vPupD.offsetHeight + 'px';
-  var zTop = vPupD.offsetTop + (vPupD.offsetHeight * .5);
+  vPupD.style.left = zLeft + 'px';
+
+  vPupD.style.top = ((mouseVars.current.y - 5) - (vPupD.offsetHeight * 1.15)) + 'px';
+  var zTop = vPupD.offsetTop + (vPupD.offsetHeight * .55);
   //debugger;
   zTop -= vPup.offsetHeight;
   //check if there is enough room at the top to show the tooltip
   if (zTop < 0) {
     //try placing the tooltip below the pointer instead of above
-    vPupD.style.top = mouseVars.current.y + 5 + 'px';
+    vPupD.style.top = (mouseVars.current.y + 5) + (vPupD.offsetHeight * .15) + 'px';
     //now place the tooltip half-on the diamond arrow:
-    zTop = vPupD.offsetTop; + (vPupD.offsetHeight * .5);
+    zTop = vPupD.offsetTop + (vPupD.offsetHeight * .45);
     vPupD.classList.remove('pupDB');
     vPupD.classList.add('pupDA');
     vPupDc.classList.remove('pupDcB');
@@ -80,16 +88,17 @@ function toolTipPlace() {
     vPupDc.classList.add('pupDcB');
     vPupDc.style.opacity = 0.6;
   }
+
+  vPupB.style.top = vPupD.offsetTop + 'px';
   vPup.style.top = zTop + 'px';
   //emulate a border around the square part of the popup, which should marry up with the diamond's border :D
-  vPupc.style.left = vPupB.style.left = (vPup.offsetLeft - 1) + 'px';
-  vPupc.style.top = (vPup.offsetTop - 1) + 'px';
+  vPupc.style.left = vPupB.style.left = (vPup.offsetLeft) + 'px';
+  vPupc.style.top = (vPup.offsetTop) + 'px';
   vPupc.style.width = vPupB.style.width = vPup.offsetWidth + 'px';
   vPupc.style.height = vPup.offsetHeight + 'px';
+
   vPupDc.style.left = vPupD.offsetLeft + 'px';
   vPupDc.style.top = vPupD.offsetTop + 'px';
-  vPupDc.style.width = vPupD.offsetWidth + 'px';
-  vPupDc.style.height = (vPupD.offsetHeight) + 'px';
 }
 function toolTipShowNow(e, zID) {
   toolTipMouseMove(e);

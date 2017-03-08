@@ -22,6 +22,12 @@ Females: % body fat = 163.205 x log10(waist + hip - neck) - 97.684 x log10(heigh
 */
 
 function resize() {
+  //little fix for on-screen keyboards resizing screen space:
+  if (document.activeElement.classList.contains('editEnable')) {
+    //also could double-check by checking that the width hasn't changed:
+  //if (document.body.offsetWidth === window.innerWidth) - if needed...
+    return;
+  }
   //maybe I should make the game bit a squre, then have the scores bit
   //however amount of space is left? what if the available area is square?
   //regardless, let's begin by finding the smallest size out of length and width:
@@ -70,10 +76,10 @@ function resize() {
     //this should default as 0px for both generaly.
     var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
     var zFont = window.innerWidth * .002;
-
+    
     while (zTop < 0) {
       zFont *= .9;
-      document.getElementById('cont').style.fontSize = vPup.style.fontSize = zFont + 'em';
+      document.body.style.fontSize = zFont + 'em';
       zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
     }
 
@@ -159,10 +165,10 @@ optimal waist measurement is half your height I heard too.
 
   //convert lb to kg, inch to cm if needed:
   if (!zKg)  {
-    zWeight = parseFloat(document.getElementById('w').value) / 2.20462262184877566540;
+    zWeight = parseFloat(document.getElementById('w').value) / zConvert[1];
   }
   if (!zCm)  {
-    zHeight = parseFloat(document.getElementById('h').value) / 0.39370078740157482544;
+    zHeight = parseFloat(document.getElementById('h').value) / zConvert[0];
   }
 
   if (isNaN(zHeight) || isNaN(zWeight) || isNaN(zNow) || isNaN(zThen) || isNaN(zAge)) {
@@ -260,13 +266,12 @@ optimal waist measurement is half your height I heard too.
   var zNeck = parseFloat(document.getElementById('dn').value);
   var zWaist = parseFloat(document.getElementById('dw').value);
   var zHip = parseFloat(document.getElementById('dh').value);
-  var aHeight = zHeight;
+  var aHeight = zHeight * zConvert[0];
   //if the neck, waist, hips are in in CMs, convert to inches...
   if (zCm) {
-    zNeck *= 0.39370078740157482544;
-    zWaist *= 0.39370078740157482544;
-    zHip *= 0.39370078740157482544;
-    aHeight *= 0.39370078740157482544;
+    zNeck *= zConvert[0];
+    zWaist *= zConvert[0];
+    zHip *= zConvert[0];
   }
 /*
   (All circumference and height measurements are in inches.)
@@ -310,11 +315,11 @@ let's assume that the calculation works as intended with not extra parentheses!!
   document.getElementById('tg').value = Math.round(zToGain / .7);
   //convert kg back to lb, cm back to inch if needed:
   if (!zKg) {
-    zToGain *= 2.20462262184877566540;
-    iWeight *= 2.20462262184877566540;
+    zToGain *= zConvert[1];
+    iWeight *= zConvert[1];
   }
   if (!zCm) {
-    iWaist *= 0.39370078740157482544;
+    iWaist *= zConvert[0];
   }
   //do ideal waist measurement
   document.getElementById('d').value = iWaist.toFixed(2);
@@ -337,6 +342,8 @@ function cc_dataLoad() {
       if (LSsplit1[0] === '0') {
         //if female was selected, change to female now
         cc_swapButton('f', 'm');
+        document.getElementById('dh').classList.remove('inputDi');
+        document.getElementById('dh').classList.add('inputEn');
       }
       if (LSsplit1[1] === '0') {
         cc_swapButton('in', 'cm');
@@ -392,16 +399,15 @@ function cc_mClick(zButton) {
   var zButtonID = zButton.id;
   if (zButtonID === 'm') {
     cc_swapButton('m', 'f');
+    document.getElementById('dh').classList.remove('inputEn');
+    document.getElementById('dh').classList.add('inputDi');
   } else if (zButtonID === 'f') {
     cc_swapButton('f', 'm');
+    document.getElementById('dh').classList.remove('inputDi');
+    document.getElementById('dh').classList.add('inputEn');
   } else {
     convertToggler(zButtonID, zButton);
-  }/*
-   else if (zButtonID === 'kg' || zButtonID === 'lb') {
-    cc_weight(zButtonID, zButton);
-  } else if (zButtonID === 'cm' || zButtonID === 'in') {
-    cc_waist(zButtonID, zButton);
-  } */
+  }
   cc_calc();
 }
 function cc_swapButton(zEnable, zDisable) {
@@ -416,33 +422,45 @@ function convertToggler(zButtonID, zButton) {
   // 1 cm is 0.39370078740157482544 inches
   if (zButtonID === 'cm' && zButton.classList.contains('uButtonGrey')) {
     cc_swapButton('cm', 'in');
-    document.getElementById('h').value = (document.getElementById('h').value / 0.39370078740157482544).toFixed(2);
+    convertIt('h', 0, 0, 2);
+    convertIt('dn', 0, 0, 2);
+    convertIt('dw', 0, 0, 2);
+    convertIt('dh', 0, 0, 2);
   } else if (zButtonID === 'in' && zButton.classList.contains('uButtonGrey')) {
     cc_swapButton('in', 'cm');
-    document.getElementById('h').value = (document.getElementById('h').value * 0.39370078740157482544).toFixed(2);
+    convertIt('h', 1, 0, 2);
+    convertIt('dn', 1, 0, 2);
+    convertIt('dw', 1, 0, 2);
+    convertIt('dh', 1, 0, 2);
   }
-
   //1 Kg = 2.20462262184877566540 lb
   if (zButtonID === 'kg' && zButton.classList.contains('uButtonGrey')) {
     cc_swapButton('kg', 'lb');
-    document.getElementById('w').value = (document.getElementById('w').value / 2.20462262184877566540).toFixed(2);
+    convertIt('w', 0, 1, 2);
   } else if (zButtonID === 'lb' && zButton.classList.contains('uButtonGrey')) {
     cc_swapButton('lb', 'kg');
-    document.getElementById('w').value = (document.getElementById('w').value * 2.20462262184877566540).toFixed(2);
+    convertIt('w', 1, 1, 2);
   }
   //next, check for the hours/minutes toggle
   else if (zButtonID === 'hr' && zButton.classList.contains('uButtonGrey')) {
     cc_swapButton('hr', 'mn');
-    document.getElementById('s').value = (document.getElementById('s').value / 60).toFixed(3);
-    document.getElementById('la').value = (document.getElementById('la').value / 60).toFixed(3);
-    document.getElementById('ma').value = (document.getElementById('ma').value / 60).toFixed(3);
-    document.getElementById('ha').value = (document.getElementById('ha').value / 60).toFixed(3);
+    convertIt('s', 0, 2, 3);
+    convertIt('la', 0, 2, 3);
+    convertIt('ma', 0, 2, 3);
+    convertIt('ha', 0, 2, 3);
   } else if (zButtonID === 'mn' && zButton.classList.contains('uButtonGrey')) {
     cc_swapButton('mn', 'hr');
-    document.getElementById('hr').value = 0;
-    document.getElementById('s').value = (document.getElementById('s').value * 60).toFixed(3);
-    document.getElementById('la').value = (document.getElementById('la').value * 60).toFixed(3);
-    document.getElementById('ma').value = (document.getElementById('ma').value * 60).toFixed(3);
-    document.getElementById('ha').value = (document.getElementById('ha').value * 60).toFixed(3);
+    convertIt('s', 1, 2, 3);
+    convertIt('la', 1, 2, 3);
+    convertIt('ma', 1, 2, 3);
+    convertIt('ha', 1, 2, 3);
+  }
+}
+function convertIt(zId, multi, zNum, zFixed) {
+  if (multi) {
+    document.getElementById(zId).value = (document.getElementById(zId).value * zConvert[zNum]).toFixed(zFixed);
+  }
+  else {
+    document.getElementById(zId).value = (document.getElementById(zId).value / zConvert[zNum]).toFixed(zFixed);
   }
 }
