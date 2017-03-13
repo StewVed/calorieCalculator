@@ -70,6 +70,13 @@ function toolTipPlace() {
   //debugger;
   zTop -= vPup.offsetHeight;
   //check if there is enough room at the top to show the tooltip
+  //little addition to place the tooltip above if there is more room there:
+  if (zTop < 0) {
+    //debugger;
+    if ((document.body.offsetHeight / 2) < mouseVars.current.y) {
+      zTop = 0;
+    }
+  }
   if (zTop < 0) {
     //try placing the tooltip below the pointer instead of above
     vPupD.style.top = (mouseVars.current.y + 5) + (vPupD.offsetHeight * .15) + 'px';

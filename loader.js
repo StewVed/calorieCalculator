@@ -26,18 +26,23 @@ var fileList = ['initialize', 'inputs', 'main', 'settings', 'sounds', 'storage',
 
 if ('serviceWorker' in navigator) {
   //https://w3c.github.io/ServiceWorker/#install
-  //debugger;
-  if (navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.addEventListener('statechange', function(e) {
-      //console.log('navigator.serviceWorker.controller statechange: ' + e.target.state);
-      if (e.target.state === 'activated') {
-        //perhaps this one will fire?!?
-        upNotCheck('u');
-      }
-    });
-  }
+  //I usually do the addeventlistener version, but...
+  //navigator.serviceWorker.oncontrollerchange = upNotCheck('u');
+
+
+  navigator.serviceWorker.addEventListener('controllerchange', function(e) {
+    //console.log('active serviceWorker statechange: ' + e.target.state);
+    //this never seems to fire... outside of devTools!
+    //if (e.target.state === 'activated') {
+      upNotCheck('u');
+    //}
+  });
+
+
 
   navigator.serviceWorker.register('sw.js').then(function(registration) {
+
+  //debugger;
     //if there is an active serviceWorker, listen for changes in it's state
     if (registration.active) {
       registration.active.addEventListener('statechange', function(e) {

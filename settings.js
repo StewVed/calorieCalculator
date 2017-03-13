@@ -23,7 +23,7 @@ function settingsCreate() {
     '<div id="setsClose" class="buttonClose">X</div>' +
     //fullscreen toggle button
     '<div id="fs" class="uButtons uButtonGreen">' + 
-      '<span id="fsI" class="fsInner">&#9974;</span> Fullscreen' + 
+      '<span id="fsI" class="fsInner">&#9974;</span>&nbsp;Fullscreen' + 
     '</div>' +
     '<br>' +
     //volume control
@@ -31,7 +31,7 @@ function settingsCreate() {
       '<div id="vol-Iv" class="volInner"><div id="vol-T" class="vImg">&#9698;</div></div>' + //Off ♫ &#128266;
     '</div>' +
     '<div id="bAbout" class="uButtons uButtonGrey">About</div>' +
-    '<div id="bChange" class="uButtons uButtonGrey">ChengeLog</div>' +
+    '<div id="bChange" class="uButtons uButtonGrey">ChangeLog</div>' +
     '<br>' +
     '<hr>' + //Now for the Support buttons:
     '<p class="B pZW">Tips & Support:</p>' + //Patreon Button-link to my site

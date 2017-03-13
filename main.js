@@ -172,7 +172,7 @@ optimal waist measurement is half your height I heard too.
   }
 
   if (isNaN(zHeight) || isNaN(zWeight) || isNaN(zNow) || isNaN(zThen) || isNaN(zAge)) {
-    document.getElementById('c').value = document.getElementById('b').value = document.getElementById('iW').value = document.getElementById('d').value = document.getElementById('cl').value = document.getElementById('tl').value = document.getElementById('tg').value = 0;
+    document.getElementById('c').value = document.getElementById('tbf').value = document.getElementById('iW').value = document.getElementById('d').value = document.getElementById('cl').value = document.getElementById('tl').value = document.getElementById('tg').value = 0;
     if (isNaN(zHeight)) {
       cc_changeInputBackColor('h', 'inputEn', 'inputNo');
     } else {
@@ -196,7 +196,7 @@ optimal waist measurement is half your height I heard too.
   }
 
   //let the user know their age as a double-check:
-  document.getElementById('_zDob').innerHTML = 'DOB (' + zAge.toFixed(2) + 'y)'
+  document.getElementById('_zDob').innerHTML = 'DOB&nbsp;(' + zAge.toFixed(2) + 'y)'
 
   //using REE = 9.99 x weight + 6.25 x height - 4.92 x age + 166 x sex (males, 1; females, 0) - 161
   //document.getElementById('c').value =
@@ -277,7 +277,7 @@ optimal waist measurement is half your height I heard too.
   (All circumference and height measurements are in inches.)
   Males: % body fat = 86.010  x log10(abdomen - neck)   -   70.041 x log10(height) + 36.76
 Females: % body fat = 163.205 x log10(waist + hip - neck) - 97.684 x log10(height) - 78.387
-let's assume that the calculation works as intended with not extra parentheses!!!!
+  let's assume that the calculation works as intended with not extra parentheses!!!!
 */
   if (zSex) {
     bfNum = 86.010 * Math.log10(zWaist - zNeck) - 70.041 * Math.log10(aHeight) + 36.76;
@@ -288,23 +288,70 @@ let's assume that the calculation works as intended with not extra parentheses!!
   document.getElementById('bf').value = bfNum.toFixed(2);
 
 
-  var zToGain, tCals;
-  var iWeight = (((zHeight / 100) * (zHeight / 100)) * 21.75);
-  var iWaist = (zHeight / 2);
+
+
+/*
+  from: https://www.livestrong.com/article/429402-how-to-calculate-your-muscle-to-fat-ratio/
+  To determine your optimal fat to lean ratio and body weight, select a range based on your gender and goals.
+  Use one of the available methods to assess your body fat percentage.
+  TBM: your Total Body Mass (total Weight)
+  BF%: body fat percentage.
+  FW:  Fat Weight.
+  LBM: Lean Body Mass
+  GBF%:Goal Body Fat percentage
+  TW:  Target Weight.
+  WL:  how much Weight to Lose.
+  The four-step formula looks like this:
+  Step 1: TBM x BF%=FW;
+  Step 2: TBM – FW=LBM;
+  Step 3: LBM/(1-GBF%) = TW;
+  Step 4: TBM–TW=WL.
+  weirdly, this appears to be the only place I've found so far that
+  gives any kind actual calculation!
+*/
+
+
+  var zToGain
+  , tCals
+  , tWeight // = (((zHeight / 100) * (zHeight / 100)) * 21.75);
+  , iWaist = (zHeight / 2)
+  , tBF = parseFloat(document.getElementById('tbf').value);
+
 
   //do BMI:
-  document.getElementById('b').value = (zWeight / ((zHeight / 100) * (zHeight / 100))).toFixed(2);
+  //document.getElementById('b').value = (zWeight / ((zHeight / 100) * (zHeight / 100))).toFixed(2);
+
+  //instead of BMI, I will allow the user to customize their target
+  //body fat %, and work out the rest from that.
+
+  /*
+    first, calculate the weight of the lean-mass, since I will
+    assume this will remain about the same (Keep dem GAINZ!)
+    Step 1: TBM x BF%=FW;
+    Step 2: TBM – FW=LBM;
+    Step 3: LBM/(1-GBF%) = TW; - - why 1-tBF% ???
+    Step 4: TBM–TW=WL.
+
+  */
+  var fatWeight = zWeight * (bfNum / 100);
+  var leanBodyMass = zWeight - fatWeight;
+/*
+  Worked out how to calculate this with the help of my wife
+  looking back at the step thing above, I now understand the 1-GBF..
+  GBF would be in decimals... eg. .15 for 15%! 
+*/
+  tWeight = (leanBodyMass / (100 - tBF)) * 100;
 
   //is this the same as zWeight / (zHeight * zHeight)
-  zToGain = (zWeight - iWeight);
+  zToGain = (zWeight - tWeight);
   //if this is a minus, then add 600?
   if (zToGain > 0) {
     tCals = -600;
-    document.getElementById('_zToLose').innerHTML = 'Lose target';
+    document.getElementById('_zToLose').innerHTML = 'Lose&nbsp;target';
   } else {
     tCals = 600;
     zToGain = -zToGain;
-    document.getElementById('_zToLose').innerHTML = 'Gain target';
+    document.getElementById('_zToLose').innerHTML = 'Gain&nbsp;target';
   }
   //add/take 600 from the maintenance calories for target cals per day.
   document.getElementById('cl').value = Math.round(totCals + tCals);
@@ -316,7 +363,7 @@ let's assume that the calculation works as intended with not extra parentheses!!
   //convert kg back to lb, cm back to inch if needed:
   if (!zKg) {
     zToGain *= zConvert[1];
-    iWeight *= zConvert[1];
+    tWeight *= zConvert[1];
   }
   if (!zCm) {
     iWaist *= zConvert[0];
@@ -324,7 +371,7 @@ let's assume that the calculation works as intended with not extra parentheses!!
   //do ideal waist measurement
   document.getElementById('d').value = iWaist.toFixed(2);
   //do ideal weight
-  document.getElementById('iW').value = iWeight.toFixed(2);
+  document.getElementById('iW').value = tWeight.toFixed(2);
   //amount of kg to lose to get to the ideal BMI
   document.getElementById('tl').value = zToGain.toFixed(2);
 }
@@ -367,33 +414,47 @@ function cc_dataLoad() {
       document.getElementById('ma').value = LSsplit1[13];
       document.getElementById('ha').value = LSsplit1[14];
 
+      //new bit for the target bodyfat% (2017-03-12)
+      if (LSsplit1.length == 17) {
+        document.getElementById('tbf').value = LSsplit1[15];
+      }
+      else {
+        if (LSsplit1[0] === '1') {
+          document.getElementById('tbf').value = '17.00'; //middle of healthy range for Males.
+        }
+        else {
+          document.getElementById('tbf').value = '26.00'; //+9 Males
+        }
+      }
     } catch (ex) {//notify of error.
     }
   }
 }
 function cc_dataSave() {
   var dataToSave =
-    document.getElementById('m').value + LS1
-  + document.getElementById('cm').value + LS1
-  + document.getElementById('kg').value + LS1
+    document.getElementById('m').value
+  + LS1 + document.getElementById('cm').value
+  + LS1 + document.getElementById('kg').value
 
-  + document.getElementById('h').value + LS1
-  + document.getElementById('w').value + LS1
-  + document.getElementById('a').value + LS1
+  + LS1 + document.getElementById('h').value
+  + LS1 + document.getElementById('w').value
+  + LS1 + document.getElementById('a').value
 
-  + document.getElementById('dn').value + LS1
-  + document.getElementById('dw').value + LS1
-  + document.getElementById('dh').value + LS1
+  + LS1 + document.getElementById('dn').value
+  + LS1 + document.getElementById('dw').value
+  + LS1 + document.getElementById('dh').value
 
-  + document.getElementById('hr').value + LS1
+  + LS1 + document.getElementById('hr').value
 
-  + document.getElementById('s').value + LS1
-  + document.getElementById('na').value + LS1
-  + document.getElementById('la').value + LS1
-  + document.getElementById('ma').value + LS1
-  + document.getElementById('ha').value + LS1;
+  + LS1 + document.getElementById('s').value
+  + LS1 + document.getElementById('na').value
+  + LS1 + document.getElementById('la').value
+  + LS1 + document.getElementById('ma').value
+  + LS1 + document.getElementById('ha').value
 
-  storageSave('Calorie Calculator', dataToSave);
+  + LS1 + document.getElementById('tbf').value
+
+  storageSave('Calorie Calculator', dataToSave + LS1);
 }
 function cc_mClick(zButton) {
   var zButtonID = zButton.id;
@@ -401,10 +462,12 @@ function cc_mClick(zButton) {
     cc_swapButton('m', 'f');
     document.getElementById('dh').classList.remove('inputEn');
     document.getElementById('dh').classList.add('inputDi');
+    document.getElementById('tbf').value = (parseFloat(document.getElementById('tbf').value) - 9).toFixed(2);
   } else if (zButtonID === 'f') {
     cc_swapButton('f', 'm');
     document.getElementById('dh').classList.remove('inputDi');
     document.getElementById('dh').classList.add('inputEn');
+    document.getElementById('tbf').value = (parseFloat(document.getElementById('tbf').value) + 9).toFixed(2);
   } else {
     convertToggler(zButtonID, zButton);
   }

@@ -76,14 +76,10 @@ function gamePadsButtonEventCheck() {
   });
 }
 function gamePadsButtonDown(zButton) {
-  var stopHere = 'blah';
-  //I think it'd be nice to have the button lighten here, and play the first beep here...
+
 }
 function gamePadsButtonUp(zButton) {
-  var stopHere = 'blah';
-  //then the right/wrong beep here, with the button's color going back as well.
-  //and now this would be the same as mouseClick...
-  endUp(gamepadReMap[zButton]);
+
 }
 function keyNum(e) {
   return e.keyCode || window.event.keyCode;
@@ -95,10 +91,6 @@ function keyDown(e) {
   if (!document.activeElement.classList.contains('editEnable')) {
     if (keysIgnore.indexOf(theKey) === -1) {
       bubbleStop(e);
-      if (isFinite(keysCurrent[theKey])) {
-        //because there is a 0, I gotta check whether it is null/undefined.
-        endUp(keysCurrent[theKey]);
-      }
       //simply add the newly pressed key into the WinKeys array.
       keyVars.push(theKey);
       anEvent();
@@ -416,7 +408,7 @@ function mouseClick() {
   } else if (targID === 'bAbout') {
     upNotOpen('About the Developer', appAbout);
   } else if (targID === 'bChange') {
-    upNotOpen('Todlearner ChangeLog', appCL);
+    upNotOpen('App ChangeLog', appCL);
   } else if (targID.slice(0, 3) === 'vol') {
     volDown();
   } else if (targID.slice(0, 4) === 'stor') { //storage question.

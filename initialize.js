@@ -36,7 +36,7 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 , keyVars = []
 //For touch-enabled devices
 , touchVars = []
-//from webtop project - 
+//from webtop project -
 , imgSocs = 'style="background:center/contain no-repeat url(\'images/'
 //base64 code for an empty 1x1 png:
 , imgDummy = ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACAQMAAABIeJ9nAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAApJREFUCNdjAAIAAAQAASDSLW8AAAAASUVORK5CYII="'
@@ -54,7 +54,7 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 , tooltipVars = {opac:0, over:false, was:null, is:null, text:'', timer:null}
 , measureTips = '<br><br>Try to keep the measuring tape as horizontal as you can.<br><br>repeat each set of measurements three times. eg. neck, waist, neck, waist, neck, waist for Males. (not neck, neck, neck, waist, waist, waist!)'
 , toolTips = {
-  'zDob': '16+<br><br>Enter your date of birth in YYYY-MM-DD (ISO-8601) format.<br>eg, 1987-01-23 for the 23rd of January 1987.'
+  'zDob': 'Designed for 16+<br><br>Enter your date of birth in YYYY-MM-DD (ISO-8601) format.<br>eg, 1987-01-23 for the 23rd of January 1987.'
 , 'zNeck': 'Measure just under the Adam&apos; apple, taking care to not include the traps.' + measureTips
 , 'zWaist': 'Measure directly over the navel for Males, and a little above the navel for Females.' + measureTips
 , 'zHips': 'Measure the biggest rounding of the glutes (bum).' + measureTips
@@ -62,14 +62,15 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 , 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>slow swimming</li></ul>'
 , 'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>'
 , 'zHeavy': 'This is High-intensity activty like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifing. '
-, 'zBFat': 'This uses the US Navy&apos;s calculation for body fat percentage, which is apparently within 3% accuracy when measurements are properly taken.<br><br>As a rough guide, healty body fat range are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
-, 'zCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since<br>' + 'you customised your activity-levels.'
-, 'zBMI': 'An average adult&apos;s ideal BMI is in the 18.5 to 24.9 range.<br>If your BMI is less than 18.5, you likely weigh less than is ideal for your height,<br>but if your BMI is 25 or more, you may weigh more than is ideal for your height.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
-, 'ziWeight': 'Calculated using your height, and<br>the BMI of 21.75, which is the middle<br>of the healthy range for an average person.<br><br><span style="color:hsl(30, 100%, 33%);">(As with BMI itself, Use this only as a guide)<span>'
-, 'ziWaist': 'An average adult&apos;s ideal waist measurement<br>is simply half their height :-)<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
-, 'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guidline of 600 calories gain/defecit per day.<br><br>' + 'Everybody is diferent, and though this calorie calutator should be more accurate than most available, your individual body-type, metabolism, etc may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your target calorie intake by 200 calories, and if you are losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.'
-, 'zToLose': 'Simply the difference between<br>your current weight and your ideal weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
-, 'zToGoal': 'Assuming an average of 0.7kg per week,<br>this is how many weeks it would<br>take to reach your ideal weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+, 'zBFat': 'This uses the US Navy&apos;s calculation for body fat percentage, which is apparently within 3% accuracy when measurements are properly taken.' + measureTips
+, 'zTBF': 'Specify what Body-Fat percentage you would like to be.<br><br>As a rough guide, healty body fat ranges are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
+/*, 'zBMI': 'An average adult&apos;s ideal BMI is in the 18.5 to 24.9 range.<br>If your BMI is less than 18.5, you likely weigh less than is ideal for your height,<br>but if your BMI is 25 or more, you may weigh more than is ideal for your height.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'*/
+, 'ziWeight': 'Calculated using your specified Target Body-Fat percentage, with your Lean Body Mass remaining the same.<br><br>(strength training can minimise muscle-loss during losing weight.)'
+, 'ziWaist': 'An <span style="font-style:italic;font-weight:bold;">average</span> adult&apos;s ideal waist measurement is simply half their height :-)<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+, 'zCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since you customised your activity-levels.'
+, 'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guidline of 600 calories gain/defecit per day.<br><br>' + 'Everybody is diferent, and though this calutator should be more accurate than most available, your individual body-type, metabolism, etc. may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your target calorie intake by 200 calories, and if you are losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.'
+, 'zToLose': 'Simply the difference between your current weight and your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+, 'zToGoal': 'Assuming an average of 0.7kg per week, this is how many weeks it would take to reach your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
 }
 , LS1 = '@#~'
 , LS2 = '~#@'
@@ -130,21 +131,21 @@ function Init() {
   cc_calc();
 }
 function initContent() {
-  var butLeft = 'style="width:15%;margin-left:4px"'
-  , butRight = 'style="width:15%;margin-right:4px"'
+  var butLeft = 'style="width:15%"'
+  , butRight = 'style="width:15%;"'
   ;
 
   document.body.innerHTML =
   '<div id="cont">'
   + '<div style="background:lightgreen;overflow:hidden;padding-top:4px;text-align:center;">'
-    + '<button id="m" type="button" class="uButtonLeft uButtons uButtonGreen " ' + butLeft + ' value="1">Male</button>'
-    + '<button id="f" type="button" class="uButtons uButtonGrey uButtonRight" ' + butRight + ' value="0">Female</button>' //default
+    + '<button id="m" type="button" class="uButtonLeft uButtons uButtonGreen uB15" value="1">Male</button>'
+    + '<button id="f" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">Female</button>' //default
 
-    + '<button id="kg" type="button" class="uButtonLeft uButtons uButtonGreen " ' + butLeft + ' value="1">Kg</button>'
-    + '<button id="lb" type="button" class="uButtons uButtonGrey uButtonRight" ' + butRight + ' value="0">lb</button>' //default
+    + '<button id="kg" type="button" class="uButtonLeft uButtons uButtonGreen uB15" value="1">Kg</button>'
+    + '<button id="lb" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">lb</button>' //default
 
-    + '<button id="cm" type="button" class="uButtonLeft uButtons uButtonGreen " ' + butLeft + ' value="1">cm</button>'
-    + '<button id="in" type="button" class="uButtons uButtonGrey uButtonRight" ' + butRight + ' value="0">inch</button>' //default
+    + '<button id="cm" type="button" class="uButtonLeft uButtons uButtonGreen uB15" value="1">cm</button>'
+    + '<button id="in" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">inch</button>' //default
     //Height, Weight, and Date of Birth:
     + '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
     + '<div class="conty c4">Height'
@@ -172,7 +173,7 @@ function initContent() {
     + '</div>'
 
     + '<div class="conty c4">'
-      + '<div id="_zHips" class="toolTipclass">Hips(female)</div>'
+      + '<div id="_zHips" class="toolTipclass">Hips&nbsp;(female)</div>'
       + '<input type="text" id="dh" class="editEnable inputThingy inputDi" value="118.75">'
     + '</div>'
   + '</div>'
@@ -180,8 +181,8 @@ function initContent() {
   //Activity stuff to make the calorie calculation much more accurate.
   + '<div style="background:lightsalmon;overflow:hidden;">'
     + '<div style="clear:both;float:left;width:100%;text-align:center;margin-top:5px;">Activity per day'
-      + '<button id="hr" type="button" class="uButtons uButtonGreen uButtonLeft" ' + butLeft + ' value="1">hrs</button>'
-      + '<button id="mn" type="button" class="uButtons uButtonGrey uButtonRight" ' + butRight + ' value="0">mins</button>' //default
+      + '<button id="hr" type="button" class="uButtons uButtonGreen uButtonLeft uB15" value="1">hrs</button>'
+      + '<button id="mn" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">mins</button>' //default
     + '</div>'
 
     + '<div class="conty c5">Sleep'
@@ -212,28 +213,28 @@ function initContent() {
   //Results!
   + '<div style="clear:both;border-top:10px double;background-color:lightblue;overflow:hidden;box-sizing:border-box;">'
     + '<div class="conty c4">'
-      + '<div id="_zBFat" class="toolTipclass">Body Fat %</div>'
+      + '<div id="_zBFat" class="toolTipclass">Body&nbsp;Fat&nbsp;%</div>'
       + '<input type="text" id="bf" class="editEnable inputThingy inputEn" value="0000">'
     + '</div>'
 
     + '<div class="conty c4">'
-      + '<div id="_zBMI" class="toolTipclass">BMI</div>'
-      + '<input type="text" id="b" class="editEnable inputThingy inputEn" value="00.00">'
+      + '<div id="_zTBF" class="toolTipclass">Target&nbsp;BF%</div>'
+      + '<input type="text" id="tbf" class="editEnable inputThingy inputEn" value="17.00">'
     + '</div>'
 
     + '<div class="conty c4">'
-      + '<div id="_ziWeight" class="toolTipclass">Ideal weight</div>'
+      + '<div id="_ziWeight" class="toolTipclass">Target&nbsp;weight</div>'
       + '<input type="text" id="iW" class="editEnable inputThingy inputEn" value="00.00">'
     + '</div>'
 
     + '<div class="conty c4">'
-      + '<div id="_ziWaist" class="toolTipclass">Ideal waist</div>'
+      + '<div id="_ziWaist" class="toolTipclass">Ideal&nbsp;waist</div>'
       + '<input type="text" id="d" class="editEnable inputThingy inputEn" value="00.00">'
     + '</div>'
 
     //+ '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
     + '<div class="conty c4">'
-      + '<div id="_zCals" class="toolTipclass">Maint calories</div>'
+      + '<div id="_zCals" class="toolTipclass">Maint&nbsp;calories</div>'
       + '<input type="text" id="c" class="editEnable inputThingy inputEn" value="0000">'
     + '</div>'
 

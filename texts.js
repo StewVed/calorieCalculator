@@ -8,10 +8,13 @@ var appCL =
   '<p class="B C">TODO</p> ' +
   '<ul><li>Find out why the app does not display update messages. (comment out console.logs in case they were getting in the way?)' +
   '</li><li>Tooltips should be scrollable if the content exceedes the available space.' +
-  '</li><li>Tooltips should be placed on whichever half has more space.' +
-  '</li><li>Maybe remove BMI, and Ideal weight as they are only accurate for <q>average</q> body compositions.' +
-  '</li><li>Add Fat-Free Mass Index.' +
-  '</li><li>Ideally, I would like to use FFMI and BF% to work out what ideal weight might be. Not sure whether any studies/algorythms exist for that (yet)' +
+  '</li></ul>' +
+  '<hr>' +
+  '<p class="B C">13th March 2017</p> ' +
+  '<ul><li>' + zNew + 'Replaced outdated and inaccurate (for non-average body-types) BMI, by universally more accurate Target Body Fat.' +
+  '</li><li>' + zImp + 'Many small UI improvements.' +
+  '</li><li>' + zImp + 'Tooltips should now be placed on whichever half has more space.' +
+  '</li><li>' + zDev + 'Yet another go at getting the app let the user know when the app has successfully updated.' +
   '</li></ul>' +
   '<hr>' +
   '<p class="B C">8th March 2017</p> ' +
@@ -64,7 +67,7 @@ var appBugs =
 
 var appAbout =
   '<img alt="The Author" src=images/StewVed.jpg style=float:left;' +
-  'border-radius:0.7em;width:33%;margin-top:0.8em;margin-right:.1em;margin-bottom:.1em;>' +
+  'border-radius:0.7em;width:33%;margin-top:0.8em;margin-right:.3em;margin-bottom:.1em;>' +
   '<p>' +
     'Stewart Robinson (StewVed) was born in the United Kingdom, in the' +
     ' late 1970\'s.' +
