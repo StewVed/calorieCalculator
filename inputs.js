@@ -347,10 +347,12 @@ function mouseUp(e) {
   //tooltip stuff for touch and click support
   if (tooltipVars.over && vPup.style.opacity > 0 && !mouseVars.start.target.classList.contains('toolTipclass')) {
     toolTipStuffHide(mouseVars.start.target.id);
-  } else if (mouseVars.start.target.classList) {
-    if (mouseVars.start.target.classList.contains('toolTipclass')) {
-      //show tooltip immediatly
-      toolTipShowNow(e, mouseVars.start.target.id);
+  } else if (mouseVars.start.target) {
+    if (mouseVars.start.target.classList) {
+      if (mouseVars.start.target.classList.contains('toolTipclass')) {
+        //show tooltip immediatly
+        toolTipShowNow(e, mouseVars.start.target.id);
+      }
     }
   }
 

@@ -4,10 +4,19 @@ var zAll = '<span class="B'
   , zBug = zAll + ' Re">Bug-Fix: </span>'
   , zDev = zAll + ' Or">Development: </span>'
 
+
+
+
 var appCL =
   '<p class="B C">TODO</p> ' +
-  '<ul><li>Find out why the app does not display update messages. (comment out console.logs in case they were getting in the way?)' +
-  '</li><li>Tooltips should be scrollable if the content exceedes the available space.' +
+  '<ul><li>Tooltips should be scrollable if the content exceeds the available space.' +
+  '</li></ul>' +
+  'If you find a bug, or have a suggestion, please let me know at ' +
+  '<a class=ubLink href="https://github.com/StewVed/calorieCalculator/issues" target=_blank>GitHub Issues</a>' +
+  '<hr>' +
+  '<p class="B C">14th March 2017</p> ' +
+  '<ul><li>' + zImp + '(Not yet tested) calculator should move above an on-screen keyboard now, and make sure that where you are editing stays on the screen.' +
+  '</li><li>' + zDev + 'Ripped out the service worker activated events that simply never fire, and replaced with localStoage version checking.' +
   '</li></ul>' +
   '<hr>' +
   '<p class="B C">13th March 2017</p> ' +
@@ -30,10 +39,10 @@ var appCL =
   '<ul><li>' + zNew + 'Date Of Birth implemented for age. This makes for more accurate age, since you no longer have to keep updating it yourself as time goes by.' +
   '</li><li>' + zNew + 'As a little bonus and double check, your calculated age is shown by DOB. to 2 decimal points' +
   '</li><li>' + zNew + 'Finally got round to making the app it&apos;s own Favicon!' +
-  '</li><li>' + zImp + 'The settings <q>hamburger</q> button now has an opaque background, so it can be senn more easily.' +
+  '</li><li>' + zImp + 'The settings <q>hamburger</q> button now has an opaque background, so it can be seen more easily.' +
   '</li><li>' + zImp + 'font scaling is back to being the entire app, including <q>toast</q> popups, and settings.' +
-  '</li><li>' + zImp + 'make the gradiants more pronounced on the inputs. (rounded backgrounds).' +
-  '</li><li>' + zImp + 'A bit more work to the toolTip system, and also improved tooltip descriptions here and there.' +
+  '</li><li>' + zImp + 'make the gradients more pronounced on the inputs. (rounded backgrounds).' +
+  '</li><li>' + zImp + 'A bit more work to the tooltip system, and also improved tooltip descriptions here and there.' +
   '</li><li>' + zBug + 'fixed an issue with the <q>toast</q> popup, where we could not click any buttons.' +
   '</li><li>' + zDev + 'Tab and Return/enter should now remove input focus. Hopefully this will close on-screen keyboards on mobile devices.' +
   '</li></ul>' +
@@ -50,7 +59,7 @@ var appCL =
   '<hr>' +
   '<p class="B C">3rd March 2017</p> ' +
   '<ul><li>' + zNew + 'Made the app stand-alone, Open Source, and put it on GitHub.' +
-  '</li><li>' + zDev + 'Used my latest Delevopment code from my Toddlearner project as the base, so this app can be used offline and just like a native app.' +
+  '</li><li>' + zDev + 'Used my latest Development code from my Toddlearner project as the base, so this app can be used offline and just like a native app.' +
   '</li></ul>' +
   '<hr>' +
   'Earlier development (from a year or two ago) was as a part of my Webtop.'

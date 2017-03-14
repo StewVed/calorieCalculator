@@ -1,3 +1,4 @@
+var zAppVersion = '2017-3-14';
 //Modified from stewved/gameTemplate/initialize.s - part of my gameTemplate project.
 //hopefully comprehensive HTML cancel fullscreen:
 var killFS = (document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen)
@@ -61,14 +62,14 @@ var killFS = (document.exitFullscreen || document.mozCancelFullScreen || documen
 , 'zSitting': '<span style="font-weight:bold;color:hsl(240, 100%, 33%)">This is automatically calculated by taking all of other activities out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>Either sitting, reclining,</li><li>or standing still, quietly</li><li>reading</li><li>listening to music (Not dancing),</li><li>desk work.</li></ul>'
 , 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>slow swimming</li></ul>'
 , 'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>'
-, 'zHeavy': 'This is High-intensity activty like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifing. '
+, 'zHeavy': 'This is High-intensity activity like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifting. '
 , 'zBFat': 'This uses the US Navy&apos;s calculation for body fat percentage, which is apparently within 3% accuracy when measurements are properly taken.' + measureTips
-, 'zTBF': 'Specify what Body-Fat percentage you would like to be.<br><br>As a rough guide, healty body fat ranges are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
+, 'zTBF': 'Specify what Body-Fat percentage you would like to be.<br><br>As a rough guide, healthy body fat ranges are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
 /*, 'zBMI': 'An average adult&apos;s ideal BMI is in the 18.5 to 24.9 range.<br>If your BMI is less than 18.5, you likely weigh less than is ideal for your height,<br>but if your BMI is 25 or more, you may weigh more than is ideal for your height.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'*/
 , 'ziWeight': 'Calculated using your specified Target Body-Fat percentage, with your Lean Body Mass remaining the same.<br><br>(strength training can minimise muscle-loss during losing weight.)'
 , 'ziWaist': 'An <span style="font-style:italic;font-weight:bold;">average</span> adult&apos;s ideal waist measurement is simply half their height :-)<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
 , 'zCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since you customised your activity-levels.'
-, 'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guidline of 600 calories gain/defecit per day.<br><br>' + 'Everybody is diferent, and though this calutator should be more accurate than most available, your individual body-type, metabolism, etc. may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your target calorie intake by 200 calories, and if you are losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.'
+, 'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guideline of 600 calories gain/deficit per day.<br><br>' + 'Everybody is different, and though this calculator should be more accurate than most available, your individual body-type, metabolism, etc. may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your target calorie intake by 200 calories, and if you are losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.'
 , 'zToLose': 'Simply the difference between your current weight and your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
 , 'zToGoal': 'Assuming an average of 0.7kg per week, this is how many weeks it would take to reach your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
 }
@@ -100,8 +101,9 @@ function Init() {
   , tWoz: 0 //Time on Last Frame
   };
 
-  //check for saved data. If set, the user has chosed to either save or not save data.
+  //check for saved data. If set, the user has chosen to either save or not save data.
   storageCheck();
+
 
   //for the moment, just use the default keyset:
   keysCurrent = keysDefault;
@@ -127,6 +129,8 @@ function Init() {
   //now that everything is set up, make a recurring checker for button presses:
   gamePadsButtonEventCheck();
   resize();
+
+  versionCheck();
   //calculate now:
   cc_calc();
 }
@@ -278,4 +282,29 @@ function addEventListeners() {
   window.addEventListener('mouseup', mouseUp, false);
   window.addEventListener('keydown', keyDown, false);
   window.addEventListener('keyup', keyUp, false);
+}
+function versionCheck() {
+  /*
+    since every single event listener for updated sw failes to fire,
+    I assume that the actual updating (wheh dev tools is not active)
+    happens when the page is closed. Whatever. let's just do a
+    storage-based version check.
+
+    Obviously this will only work for users who allow storage, and I
+    will have to remember to update the zAppVersion on every release!
+  */
+//debugger;
+  var dataToLoad = storageLoad('appVersion');
+  if (dataToLoad) {
+    if (zAppVersion != dataToLoad) {
+      //webbapp has been updated!
+      upNotCheck('u');
+      storageSave('appVersion', zAppVersion);
+    }
+  }
+  else {
+    //this could be because the user declined saving preferences,
+    //or if is a new install, or if the user cleared the localStorage.
+    storageSave('appVersion', zAppVersion);
+  }
 }

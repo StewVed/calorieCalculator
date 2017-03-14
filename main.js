@@ -25,7 +25,25 @@ function resize() {
   //little fix for on-screen keyboards resizing screen space:
   if (document.activeElement.classList.contains('editEnable')) {
     //also could double-check by checking that the width hasn't changed:
-  //if (document.body.offsetWidth === window.innerWidth) - if needed...
+    //if (document.body.offsetWidth === window.innerWidth) - if needed...
+
+    /*
+      attempt to keep the entire webapp visible...
+      I will assume that document.body.offsetHeight will be correctly reported.
+    */
+    var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
+
+    if (zTop < 0) {
+      //make sure that the activeElement is visible.
+      var zParentElem = document.activeElement.parentNode;
+      var xTop = document.activeElement.offsetHeight + document.activeElement.offsetTop;
+      while (zParentElem.id != 'cont') {
+        xTop += zParentElem.offsetTop;
+        zParentElem = document.activeElement.parentNode;
+      }
+    }
+
+    document.getElementById('cont').style.top = zTop + 'px';
     return;
   }
   //maybe I should make the game bit a squre, then have the scores bit
@@ -60,7 +78,6 @@ function resize() {
       and since that would be done by the browser, I expect
       it to be more efficient than my own dodgy scaling code!
     */
-    //document.getElementById('cont').style.fontSize = vPup.style.fontSize = window.innerWidth * .002 + 'em';
     document.body.style.fontSize = window.innerWidth * .002 + 'em';
   /*
     var gWidth = document.body.offsetWidth;
@@ -76,7 +93,7 @@ function resize() {
     //this should default as 0px for both generaly.
     var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
     var zFont = window.innerWidth * .002;
-    
+
     while (zTop < 0) {
       zFont *= .9;
       document.body.style.fontSize = zFont + 'em';
@@ -84,9 +101,8 @@ function resize() {
     }
 
     zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    document.getElementById('cont').style.top = zTop + 'px'
+    document.getElementById('cont').style.top = zTop + 'px';
     document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth) + 'px';
-
   }
 
   if (document.getElementById('toastClose')) {

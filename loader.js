@@ -25,54 +25,28 @@ var fileList = ['initialize', 'inputs', 'main', 'settings', 'sounds', 'storage',
 //upNotCheck('u');
 
 if ('serviceWorker' in navigator) {
-  //https://w3c.github.io/ServiceWorker/#install
-  //I usually do the addeventlistener version, but...
-  //navigator.serviceWorker.oncontrollerchange = upNotCheck('u');
+  /*
+    https://w3c.github.io/ServiceWorker/#install
+    2017-03-14 have given up with all statechange:activated event checks
+    they just don't work, and so I assume the actual activation of a new
+    serviceWorker takes place when the page is closed or some other time
+    when these eventListeners are not listening.
 
-
-  navigator.serviceWorker.addEventListener('controllerchange', function(e) {
-    //console.log('active serviceWorker statechange: ' + e.target.state);
-    //this never seems to fire... outside of devTools!
-    //if (e.target.state === 'activated') {
-      upNotCheck('u');
-    //}
-  });
-
-
+    I've created a localStorage version check instead!
+  */
 
   navigator.serviceWorker.register('sw.js').then(function(registration) {
-
-  //debugger;
-    //if there is an active serviceWorker, listen for changes in it's state
-    if (registration.active) {
-      registration.active.addEventListener('statechange', function(e) {
-        //console.log('active serviceWorker statechange: ' + e.target.state);
-        //this never seems to fire... outside of devTools!
-        if (e.target.state === 'activated') {
-          upNotCheck('u');
-        }
-      });
-    }
-
     /*
       if there is a waiting serviceWorker, listen for changes in it's state.
-      When the page closes, 
+      When the page closes,
       Upon page reload, the waiting serviceWorker is
       promoted to the active serviceWorker.
     */
     if (registration.waiting) {
       if (registration.active && registration.waiting.state === 'installed') {
-        //console.log('waiting ServiceWorker installed and still waiting to activate.');
         //inform user that a hard-reload is needed, not just F5
-        upNotCheck('Waiting to update...<br>Please close then re-open app for new version.');
+        upNotCheck('Waiting to update...<br>Please close then re-open app for new version.')
       }
-      registration.waiting.addEventListener('statechange', function(e) {
-        //console.log('waiting serviceWorker statechange: ' + e.target.state);
-        if (e.target.state === 'activated') {
-          //this never seems to fire... outside of devTools!
-          upNotCheck('u');
-        }
-      });
     }
     /*
       listen for an update to the serviceworker's file.
@@ -94,30 +68,17 @@ if ('serviceWorker' in navigator) {
         //yeah... seems to keep the eventlistener through it all.
         if (e.target.state === 'installed') {
           if (registration.active) {
-            sw_installed()
-            //console.log('new ServiceWorker installed and waiting to activate.');
+            upNotCheck('Update downloaded.<br>Please restart app for new version.');
           }
         }
         else if (e.target.state === 'activated') {
           upNotCheck('i')
-          //console.log('new ServiceWorker activated from install');
         }
-        //console.log('registration serviceWorker statechange: ' + e.target.state);
       });
-      //console.log('registration serviceWorker update Found');
     });
-
-    //console.log('ServiceWorker registered');
   }).catch(function(err) {
     console.log('ServiceWorker registration failed: ', err)
   });
-}
-function sw_installed() {
-  //New serviceWorker's cache has downloaded, and it is waiting to activate
-  //console.log('Service Worker update downloaded!');
-  upNotCheck(
-    'Update downloaded.<br>Please restart app for new version.'
-  );
 }
 
 function upNotCheck(msg) {

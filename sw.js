@@ -1,4 +1,4 @@
-var zAppCache = 'calorieCalc-2017-3-13';
+var zAppCache = 'calorieCalc-2017-3-14';
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppCache).then(function(cache) {
     return cache.addAll([
@@ -31,13 +31,13 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request).then(function(cacheResponse) {
-      return cacheResponse || fetch(event.request).then(function(netResponse) {
+      return cacheResponse/* || fetch(event.request).then(function(netResponse) {
         return caches.open(zAppCache).then(function(cache) {
           cache.put(event.request, netResponse.clone());
           console.log(event.request + ' not found in cache!');
           return netResponse;
         });
-      });
+      });*/
     })
   );
 });
