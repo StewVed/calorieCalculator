@@ -1,3 +1,29 @@
+var zAppVersion = '2017-3-28'
+, measureTips = '<br><br>Try to keep the measuring tape as horizontal as you can.<br><br>repeat each set of measurements three times. eg. neck, waist, neck, waist, neck, waist for Males. (not neck, neck, neck, waist, waist, waist!)'
+, toolTips = {
+  'zDob': 'Designed for 16+<br><br>Enter your date of birth in YYYY-MM-DD (ISO-8601) format.<br>eg, 1987-01-23 for the 23rd of January 1987.'
+, 'zNeck': 'Measure just under the Adam&apos; apple, taking care to not include the traps.' + measureTips
+, 'zWaist': 'Measure directly over the navel for Males, and a little above the navel for Females.' + measureTips
+, 'zHips': 'Measure the biggest rounding of the glutes (bum).' + measureTips
+, 'zSitting': '<span style="font-weight:bold;color:hsl(240, 100%, 33%)">This is automatically calculated by taking all of other activities out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>Either sitting, reclining,</li><li>or standing still, quietly</li><li>reading</li><li>listening to music (Not dancing),</li><li>desk work.</li></ul>'
+, 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>slow swimming</li></ul>'
+, 'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>'
+, 'zHeavy': 'This is High-intensity activity like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifting. '
+, 'zBFat': 'This uses the US Navy&apos;s calculation for body fat percentage, which is apparently within 3% accuracy when measurements are properly taken.' + measureTips
+, 'zTBF': 'Specify what Body-Fat percentage you would like to be.<br><br>As a rough guide, healthy body fat ranges are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
+/*, 'zBMI': 'An average adult&apos;s ideal BMI is in the 18.5 to 24.9 range.<br>If your BMI is less than 18.5, you likely weigh less than is ideal for your height,<br>but if your BMI is 25 or more, you may weigh more than is ideal for your height.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'*/
+, 'ziWeight': 'Calculated using your specified Target Body-Fat percentage, with your Lean Body Mass remaining the same.<br><br>(strength training can minimise muscle-loss during losing weight.)'
+, 'ziWaist': 'An <span style="font-style:italic;font-weight:bold;">average</span> adult&apos;s ideal waist measurement is simply half their height :-)<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+, 'zCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since you customised your activity-levels.'
+, 'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guideline of 600 calories gain/deficit per day.<br><br>' + 'Everybody is different, and though this calculator should be more accurate than most available, your individual body-type, metabolism, etc. may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your target calorie intake by 200 calories, and if you are losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.'
+, 'zToLose': 'Simply the difference between your current weight and your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+, 'zToGoal': 'Assuming an average of 0.7kg per week, this is how many weeks it would take to reach your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+}
+, zConvert = [0.39370078740157482544, 2.20462262184877566540, 60]
+, gameVars = {
+    go: 0
+  }
+;
 /*
 REE = 9.99 x weight + 6.25 x height - 4.92 x age + 166 x sex (males, 1; females, 0) - 161
 http://www.ncbi.nlm.nih.gov/pubmed/2305711
@@ -21,118 +47,143 @@ Females: % body fat = 163.205 x log10(waist + hip - neck) - 97.684 x log10(heigh
 
 */
 
-function resize() {
-  //little fix for on-screen keyboards resizing screen space:
-  if (document.activeElement.classList.contains('editEnable')) {
-    //also could double-check by checking that the width hasn't changed:
-    //if (document.body.offsetWidth === window.innerWidth) - if needed...
+function initContent() {
+  var butLeft = 'style="width:15%"'
+  , butRight = 'style="width:15%;"'
+  ;
 
-    /*
-      attempt to keep the entire webapp visible...
-      I will assume that document.body.offsetHeight will be correctly reported.
-    */
-    var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
+  var stuff =
+  '<div id="cont">'
+  + '<div style="background:lightgreen;overflow:hidden;padding-top:4px;text-align:center;">'
+    + '<button id="m" type="button" class="uButtonLeft uButtons uButtonGreen uB15" value="1">Male</button>'
+    + '<button id="f" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">Female</button>' //default
 
-    if (zTop < 0) {
-      //make sure that the activeElement is visible.
-      var zParentElem = document.activeElement.parentNode;
-      var xTop = document.activeElement.offsetHeight + document.activeElement.offsetTop;
-      while (zParentElem.id != 'cont') {
-        xTop += zParentElem.offsetTop;
-        zParentElem = document.activeElement.parentNode;
-      }
-    }
+    + '<button id="kg" type="button" class="uButtonLeft uButtons uButtonGreen uB15" value="1">Kg</button>'
+    + '<button id="lb" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">lb</button>' //default
 
-    document.getElementById('cont').style.top = zTop + 'px';
-    return;
-  }
-  //maybe I should make the game bit a squre, then have the scores bit
-  //however amount of space is left? what if the available area is square?
-  //regardless, let's begin by finding the smallest size out of length and width:
-  var a
-  , b
-  , portraitLayout;
+    + '<button id="cm" type="button" class="uButtonLeft uButtons uButtonGreen uB15" value="1">cm</button>'
+    + '<button id="in" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">inch</button>' //default
+    //Height, Weight, and Date of Birth:
+    + '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
+    + '<div class="conty c4">Height'
+      + '<input type="text" id="h" class="editEnable inputThingy inputEn" value="176.5">' //176
+    + '</div>'
 
-  document.body.style.width = window.innerWidth + 'px';
-  document.body.style.height = window.innerHeight + 'px';
+    + '<div class="conty c4">Weight'
+      + '<input type="text" id="w" class="editEnable inputThingy inputEn" value="79.50">' //82
+    + '</div>'
 
-  if (window.innerWidth > window.innerHeight) {
-    a = window.innerHeight;
-    b = window.innerWidth;
-    portraitLayout = 0;
-  }
-  else {
-    a = window.innerWidth;
-    b = window.innerHeight;
-    portraitLayout = 1;
-  }
+    + '<div class="conty c4">'
+      + '<div id="_zDob" class="toolTipclass">DOB</div>'
+      + '<input type="text" id="a" class="editEnable inputThingy inputEn" value="1987-01-23">'
+    + '</div>'
+    //Next are the neck, waist, and hips measurements for the Body Fat calculation.
+    + '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
+    + '<div class="conty c4">'
+      + '<div id="_zNeck" class="toolTipclass">Neck</div>'
+      + '<input type="text" id="dn" class="editEnable inputThingy inputEn" value="43.35">' //176
+    + '</div>'
 
+    + '<div class="conty c4">'
+      + '<div id="_zWaist" class="toolTipclass">Waist</div>'
+      + '<input type="text" id="dw" class="editEnable inputThingy inputEn" value="89.55">' //82
+    + '</div>'
 
-  if (document.getElementById('cont')) {
-    /*
-      in my webtop, I hava a scaling system for each element.
-      perhaps though, I can see if this newer idea would
-      work well enough...
-      See, just changing the font size of the body should
-      make every element scale to the new font size anyway,
-      and since that would be done by the browser, I expect
-      it to be more efficient than my own dodgy scaling code!
-    */
-    document.body.style.fontSize = window.innerWidth * .002 + 'em';
-  /*
-    var gWidth = document.body.offsetWidth;
-    var gHeight = (gWidth / (16 / 9));
-    if (gHeight > document.body.offsetHeight) {
-    gHeight = document.body.offsetHeight;
-    gWidth = gHeight * (16 / 9);
-    }
-    document.getElementById('cont').style.width = gWidth + 'px';
-    document.getElementById('cont').style.height = gHeight + 'px';
-  */
-    //when the available screen is not 16/9, center the game.
-    //this should default as 0px for both generaly.
-    var zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    var zFont = window.innerWidth * .002;
+    + '<div class="conty c4">'
+      + '<div id="_zHips" class="toolTipclass">Hips&nbsp;(female)</div>'
+      + '<input type="text" id="dh" class="editEnable inputThingy inputDi" value="118.75">'
+    + '</div>'
+  + '</div>'
 
-    while (zTop < 0) {
-      zFont *= .9;
-      document.body.style.fontSize = zFont + 'em';
-      zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    }
+  //Activity stuff to make the calorie calculation much more accurate.
+  + '<div style="background:lightsalmon;overflow:hidden;">'
+    + '<div style="clear:both;float:left;width:100%;text-align:center;margin-top:5px;">Activity per day'
+      + '<button id="hr" type="button" class="uButtons uButtonGreen uButtonLeft uB15" value="1">hrs</button>'
+      + '<button id="mn" type="button" class="uButtons uButtonGrey uButtonRight uB15" value="0">mins</button>' //default
+    + '</div>'
 
-    zTop = resizeCenter(document.body.offsetHeight, document.getElementById('cont').offsetHeight);
-    document.getElementById('cont').style.top = zTop + 'px';
-    document.getElementById('cont').style.left = resizeCenter(document.body.offsetWidth, document.getElementById('cont').offsetWidth) + 'px';
-  }
+    + '<div class="conty c5">Sleep'
+      + '<input type="text" id="s" class="editEnable inputThingy inputEn" value="8">'
+    + '</div>'
 
-  if (document.getElementById('toastClose')) {
-    closeButtonRight('toastClose');
-  }
-  if (document.getElementById('setsClose')) {
-    closeButtonRight('setsClose');
-  }
+    + '<div class="conty c5">'
+      + '<div id="_zSitting" class="toolTipclass">Sitting</div>'
+      + '<input type="text" id="na" class="editDisable inputThingy inputDi" value="15.13">'
+    + '</div>'
+
+    + '<div class="conty c5">'
+      + '<div id="_zLight" class="toolTipclass">light</div>'
+      + '<input type="text" id="la" class="editEnable inputThingy inputEn" value="0.75">'
+    + '</div>'
+
+    + '<div class="conty c5">'
+      + '<div id="_zMedium" class="toolTipclass">Medium</div>'
+      + '<input type="text" id="ma" class="editEnable inputThingy inputEn" value="0.05">'
+    + '</div>'
+
+    + '<div class="conty c5">'
+      + '<div id="_zHeavy" class="toolTipclass">Heavy</div>'
+      + '<input type="text" id="ha" class="editEnable inputThingy inputEn" value="0.07">'
+    + '</div>'
+  + '</div>'
+
+  //Results!
+  + '<div style="clear:both;border-top:10px double;background-color:lightblue;overflow:hidden;box-sizing:border-box;">'
+    + '<div class="conty c4">'
+      + '<div id="_zBFat" class="toolTipclass">Body&nbsp;Fat&nbsp;%</div>'
+      + '<input type="text" id="bf" class="editEnable inputThingy inputEn" value="0000">'
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div id="_zTBF" class="toolTipclass">Target&nbsp;BF%</div>'
+      + '<input type="text" id="tbf" class="editEnable inputThingy inputEn" value="17.00">'
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div id="_ziWeight" class="toolTipclass">Target&nbsp;weight</div>'
+      + '<input type="text" id="iW" class="editEnable inputThingy inputEn" value="00.00">'
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div id="_ziWaist" class="toolTipclass">Ideal&nbsp;waist</div>'
+      + '<input type="text" id="d" class="editEnable inputThingy inputEn" value="00.00">'
+    + '</div>'
+
+    //+ '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
+    + '<div class="conty c4">'
+      + '<div id="_zCals" class="toolTipclass">Maint&nbsp;calories</div>'
+      + '<input type="text" id="c" class="editEnable inputThingy inputEn" value="0000">'
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div  id="_zTargCals" class="toolTipclass">Target&nbsp;calories</div>'
+      + '<input type="text" id="cl" class="editEnable inputThingy inputEn" value="0000">'
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div id="_zToLose" class="toolTipclass">Lose&nbsp;target</div>'
+      + '<input type="text" id="tl" class="editEnable inputThingy inputEn" value="00.00">'
+    + '</div>'
+
+    + '<div class="conty c4">'
+      + '<div id="_zToGoal" class="toolTipclass">Weeks&nbsp;to&nbsp;target</div>'
+      + '<input type="text" id="tg" class="editEnable inputThingy inputEn" value="00.00">'
+    + '</div>'
+  + '</div>'
+
++ '</div>'
+  ;
+  return stuff;
 }
-function resizeCenter(a, b) {
-  return Math.round((a / 2) - (b / 2));
+
+
+
+
+function runApp() {
+  cc_dataLoad();
+  cc_calc();
 }
 
-// fullscreen handling from webtop then simplified for this project...
-function fullScreenToggle() {
-  var isFS = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-  if (isFS) {
-    killFS.call(document, function() {});
-    if (document.getElementById('fs')) {
-      document.getElementById('fs').classList.remove('fsd')
-      document.getElementById('fs').classList.add('fsu');
-    }
-  } else {
-    getFS.call(document.documentElement, function() {});
-    if (document.getElementById('fs')) {
-      document.getElementById('fs').classList.remove('fsu')
-      document.getElementById('fs').classList.add('fsd');
-    }
-  }
-}
 function cc_calc() {
   /*
   REE (males) = 10 x weight (kg) + 6.25 x height (cm) - 5 x age (y) + 5

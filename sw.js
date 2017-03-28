@@ -1,22 +1,27 @@
-var zAppCache = 'calorieCalc-2017-3-14';
+var zAppVersion = '2017-3-28';
+var gs = 'https://stewved.github.io/globalscripts/';
 self.addEventListener('install', function(event) {
-  event.waitUntil(caches.open(zAppCache).then(function(cache) {
+  event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([
         './'
       , './appmanifest'
-      , './images/Patreon.png'
-      , './images/PaypalDonate.png'
-      , './images/StewVed.jpg'
-      , './initialize.js'
-      , './inputs.js'
-      , './loader.js'
-      , './main.css'
+      , './events.js'
+      , './fileList.js'
       , './main.js'
-      , './settings.js'
-      , './sounds.js'
-      , './storage.js'
       , './texts.js'
-      , './toolTips.js'
+      , gs + 'gevents.js'
+      , gs + 'gtexts.js'
+      , gs + 'images/Patreon.png'
+      , gs + 'images/PaypalDonate.png'
+      , gs + 'images/StewVed.jpg'
+      , gs + 'initialize.js'
+      , gs + 'inputs.js'
+      , gs + 'loader.js'
+      , gs + 'main.css'
+      , gs + 'settings.js'
+      , gs + 'sounds.js'
+      , gs + 'storage.js'
+      , gs + 'toolTips.js'
 
     /*
       Do not include:
@@ -31,20 +36,21 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request).then(function(cacheResponse) {
-      return cacheResponse/* || fetch(event.request).then(function(netResponse) {
-        return caches.open(zAppCache).then(function(cache) {
+      return cacheResponse || fetch(event.request).then(function(netResponse) {
+        return caches.open(zAppVersion).then(function(cache) {
+          console.log(event.request.url + ' not found in cache!');
           cache.put(event.request, netResponse.clone());
-          console.log(event.request + ' not found in cache!');
+          console.log(event.request.url + ' added to cache!');
           return netResponse;
         });
-      });*/
+      });
     })
   );
 });
 self.addEventListener('activate', function(event) {
   event.waitUntil(caches.keys().then(function(cacheNames) {
     return Promise.all(cacheNames.map(function(cacheName) {
-      if (cacheName !== zAppCache) {
+      if (cacheName !== zAppVersion) {
         return caches.delete(cacheName);
       }
     }))
