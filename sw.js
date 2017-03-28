@@ -9,28 +9,9 @@ self.addEventListener('install', function(event) {
       , './fileList.js'
       , './main.js'
       , './texts.js'
-      /*
-      //I think I should be able to have these just once,
-      //in the global sw :D
-      , gs + 'gevents.js'
-      , gs + 'gtexts.js'
-      , gs + 'images/Patreon.png'
-      , gs + 'images/PaypalDonate.png'
-      , gs + 'images/StewVed.jpg'
-      , gs + 'initialize.js'
-      , gs + 'inputs.js'
-      , gs + 'loader.js'
-      , gs + 'main.css'
-      , gs + 'settings.js'
-      , gs + 'sounds.js'
-      , gs + 'storage.js'
-      , gs + 'toolTips.js'
-      */
-
     /*
       Do not include:
       index.html
-      (chrome 56.0.2924.87 (64-bit) asks for appmanifest now!) Application Manifest file (appmanifest)
       any favicons
       Service Worker file (sw.js)
     */
