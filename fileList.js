@@ -20,7 +20,6 @@ var gs = 'https://stewved.github.io/globalscripts/'
 ]
 
 
-
 //now load the actual loader file from the globalscripts:
 var a = document.createElement('script');
 a.src = gs + 'loader.js';
