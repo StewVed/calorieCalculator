@@ -1,11 +1,15 @@
 function keyDownEvents() {
   //this is for an editEnable input element
-  //for game events, use anEvent()
+}
+function keyDownGameEvents(theKey) {
+  //this is for in-game events.
 }
 function keyUpEvents() {
   //this is for an editEnable input element
-  //for game events, use anEvent()
   cc_calc();
+}
+function keyUpGameEvents(theKey) {
+  //this is for in-game events.
 }
 function mouseClickEvents() {
   cc_mClick(mouseVars.current.target);
@@ -80,24 +84,7 @@ function resizeEvents() {
   //resizeRatio(16, 9); //for making it a specific aspect ratio...
 }
 //This should be the only function that has to be edited for sliders :)
-function sliderEvents(sliderPercent) {
-  var sliderType = mouseVars.start.target.id.split('-')[1];
+function sliderEvents(sliderPercent, sve) {
 
-  if (sliderType === 'vol') {
-    //update the app's volume
-    globVol = sliderPercent[0];
-    gameVars.vol.gain.value = (globVol / 100);
-    if (mouseVars.start.target.style.background.length) {
-      storageSave('volume', globVol.toFixed(2));
-    }
-    sliderColors(sliderPercent);
-  } else if (sliderType === 'freq') {
-    //update the app's frequency
-    tg_changeFreq(sliderPercent);
-    if (mouseVars.start.target.style.background.length) {
-      storageSave('frequency', sliderPercent[0].toFixed(2));
-    }
-    sliderColors(sliderPercent);
-  }
 }
 

@@ -1,4 +1,4 @@
-var zAppVersion = '2017-3-28'
+var zAppVersion = '2017-04-02'
 , zAppPrefix = 'cc'
 , measureTips = '<br><br>Try to keep the measuring tape as horizontal as you can.<br><br>repeat each set of measurements three times. eg. neck, waist, neck, waist, neck, waist for Males. (not neck, neck, neck, waist, waist, waist!)'
 , toolTips = {

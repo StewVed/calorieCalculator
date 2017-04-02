@@ -1,5 +1,4 @@
-var zAppVersion = 'cc2017-3-28'
-, gs = 'https://stewved.github.io/globalscripts/';
+var zAppVersion = 'cc2017-04-02'
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([
@@ -23,9 +22,8 @@ self.addEventListener('fetch', function(event) {
     caches.match(event.request).then(function(cacheResponse) {
       return cacheResponse || fetch(event.request).then(function(netResponse) {
         return caches.open(zAppVersion).then(function(cache) {
-          console.log(event.request.url + ' not found in cache!');
           cache.put(event.request, netResponse.clone());
-          console.log(event.request.url + ' added to cache!');
+          console.log(event.request.url + ' added to cc cache!');
           return netResponse;
         });
       });
