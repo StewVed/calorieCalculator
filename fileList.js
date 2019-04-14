@@ -1,5 +1,4 @@
-var gs = 'https://stewved.github.io/globalscripts/'
-//gs = 'http://127.0.0.1/edsa-github/globalscripts/'
+var gs = '../globalscripts/'
 //Load up the css style files first, which includes the loading styles.
 , cssList = [
   [gs, 'gstyles', 'css', 'c']
@@ -10,13 +9,13 @@ var gs = 'https://stewved.github.io/globalscripts/'
     //Later, once most of the bugs are fixed, and features done,
     //just lob everything in to one file for ease of downloading.
     [gs, 'gevents', 'js']
-  , [gs, 'gtexts', 'js']
-  , [gs, 'initialize', 'js']
-  , [gs, 'inputs', 'js']
   , [gs, 'settings', 'js']
-  , [gs, 'sounds', 'js']
+  , [gs, 'gtexts', 'js']
+  , [gs, 'inputs', 'js']
+//  , [gs, 'sounds', 'js']
   , [gs, 'storage', 'js']
   , [gs, 'toolTips', 'js']
+  , [gs, 'initialize', 'js']
   //now add the scripts that are just for this app
   , ['', 'events', 'js']
   , ['', 'main', 'js']
