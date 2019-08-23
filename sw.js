@@ -1,4 +1,4 @@
-var zAppVersion = 'cc2017-04-02'
+var zAppVersion = 'cc2019-08-23'
 self.addEventListener('install', function(event) {
   event.waitUntil(caches.open(zAppVersion).then(function(cache) {
     return cache.addAll([

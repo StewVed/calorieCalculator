@@ -45,17 +45,10 @@ function mouseUpEvents() {
 }
 
 function mouseWheelEvents(targ, d) {
-  if (targ.classList.contains('letScroll')) {
-    //very dodgy hard-code - only one thing can be scrolled.
-    targ = document.getElementById('toastPopup');
-    var zSpeed;
-    if (d < 0) {
-      zSpeed = -1000;
-    } else {
-      zSpeed = 1000;
-    }
-    divScroller(targ, zSpeed, new Date().getTime());
-  }
+  /*
+    letScroll scroll events are handled in globalScripts
+    put any other scrolling events here.
+  */
 }
 
 function gamePadsButtonDown(zButton) {

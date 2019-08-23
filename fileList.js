@@ -12,7 +12,6 @@ var gs = '../globalscripts/'
   , [gs, 'settings', 'js']
   , [gs, 'gtexts', 'js']
   , [gs, 'inputs', 'js']
-//  , [gs, 'sounds', 'js']
   , [gs, 'storage', 'js']
   , [gs, 'toolTips', 'js']
   , [gs, 'initialize', 'js']

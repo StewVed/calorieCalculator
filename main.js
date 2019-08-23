@@ -1,30 +1,37 @@
-var zAppVersion = '2017-04-02'
+var zAppVersion = '2019-08-23'
 , zAppPrefix = 'cc'
+, zRLPercent = 1
 , measureTips = '<br><br>Try to keep the measuring tape as horizontal as you can.<br><br>repeat each set of measurements three times. eg. neck, waist, neck, waist, neck, waist for Males. (not neck, neck, neck, waist, waist, waist!)'
+, useAsGuide = '<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)</span>'
 , toolTips = {
   'zDob': 'Designed for 16+<br><br>Enter your date of birth in YYYY-MM-DD (ISO-8601) format.<br>eg, 1987-01-23 for the 23rd of January 1987.'
 , 'zNeck': 'Measure just under the Adam&apos; apple, taking care to not include the traps.' + measureTips
 , 'zWaist': 'Measure directly over the navel for Males, and a little above the navel for Females.' + measureTips
 , 'zHips': 'Measure the biggest rounding of the glutes (bum).' + measureTips
-, 'zSitting': '<span style="font-weight:bold;color:hsl(240, 100%, 33%)">This is automatically calculated by taking all of other activities out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>Either sitting, reclining,</li><li>or standing still, quietly</li><li>reading</li><li>listening to music (Not dancing),</li><li>desk work.</li></ul>'
-, 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>slow swimming</li></ul>'
+, 'zSitting': '<span style="font-weight:bold;color:hsl(240, 100%, 33%)">This is automatically calculated by taking all of other activities out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>sitting or reclining</li><li>standing still, quietly</li><li>reading</li><li>listening to music (Not dancing)</li><li>desk work.</li></ul>'
+, 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>fidgeting</li><li>slow swimming</li></ul>'
 , 'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>'
-, 'zHeavy': 'This is High-intensity activity like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifting. '
+, 'zHeavy': 'This is High-intensity activity like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifting time. '
 , 'zBFat': 'This uses the US Navy&apos;s calculation for body fat percentage, which is apparently within 3% accuracy when measurements are properly taken.' + measureTips
 , 'zTBF': 'Specify what Body-Fat percentage you would like to be.<br><br>As a rough guide, healthy body fat ranges are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
-/*, 'zBMI': 'An average adult&apos;s ideal BMI is in the 18.5 to 24.9 range.<br>If your BMI is less than 18.5, you likely weigh less than is ideal for your height,<br>but if your BMI is 25 or more, you may weigh more than is ideal for your height.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'*/
 , 'ziWeight': 'Calculated using your specified Target Body-Fat percentage, with your Lean Body Mass remaining the same.<br><br>(strength training can minimise muscle-loss during losing weight.)'
-, 'ziWaist': 'An <span style="font-style:italic;font-weight:bold;">average</span> adult&apos;s ideal waist measurement is simply half their height :-)<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+, 'ziWaist': 'An <span style="font-style:italic;font-weight:bold;">average</span> adult&apos;s ideal waist measurement is simply half their height :-)' + useAsGuide
 , 'zCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since you customised your activity-levels.'
-, 'zTargCals': 'The NHS recommends the <br>National Institute for Health and Care Excellence (NICE)<br>guideline of 600 calories gain/deficit per day.<br><br>' + 'Everybody is different, and though this calculator should be more accurate than most available, your individual body-type, metabolism, etc. may differ from the average.<br><br>' + 'If your are losing more than 1kg a week, increase your target calorie intake by 200 calories, and if you are losing less than 0.5kg a week, decrease it by 200.<br>Simply reverse this if you are wanting to gain weight.'
-, 'zToLose': 'Simply the difference between your current weight and your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
-, 'zToGoal': 'Assuming an average of 0.7kg per week, this is how many weeks it would take to reach your target weight.<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)<span>'
+, 'zTargCals': 'Your target Calorie intake is 20% difference of your maintenance calories.<br><br>' + '20% is an average between fast weight loss which is hard but takes less time, and slow weight loss which is easy but takes a long time.'
+, 'zToLose': 'Simply the difference between your current weight and your target weight.' + useAsGuide
+, 'zToGoal': 'Assuming an average of 0.7kg per week, this is how many weeks it would take to reach your target weight.'
 }
 , zConvert = [0.39370078740157482544, 2.20462262184877566540, 60]
 , gameVars = {
     go: 0
   }
 ;
+
+/*
+  ToDo: change toolTip wording for Target Calories (zTargCals) and Weeks to Target (zToGoal).
+  also make the target calories raise and lower treaking dynamic - say 10% or maintenance instead of just 200.
+*/
+
 /*
 REE = 9.99 x weight + 6.25 x height - 4.92 x age + 166 x sex (males, 1; females, 0) - 161
 http://www.ncbi.nlm.nih.gov/pubmed/2305711
@@ -40,7 +47,7 @@ http://www.ncbi.nlm.nih.gov/pubmed/2305711
   Source of the stuff:
   http://www.dtic.mil/whs/directives/corres/pdf/130803p.pdf
 
-  This is from 2002-11-05 - 15 years ago?!?!?!
+  This is from 2002-11-05
 
   (All circumference and height measurements are in inches.)
   Males: % body fat = 86.010  x log10(abdomen - neck)   -   70.041 x log10(height) + 36.76
@@ -52,7 +59,6 @@ function initContent() {
   var butLeft = 'style="width:15%"'
   , butRight = 'style="width:15%;"'
   ;
-
   var stuff =
   '<div id="cont">'
   + '<div style="background:lightgreen;overflow:hidden;padding-top:4px;text-align:center;">'
@@ -71,7 +77,7 @@ function initContent() {
     + '</div>'
 
     + '<div class="conty c4">Weight'
-      + '<input type="text" id="w" class="editEnable inputThingy inputEn" value="79.50">' //82
+      + '<input type="text" id="w" class="editEnable inputThingy inputEn" value="77.50">' //82
     + '</div>'
 
     + '<div class="conty c4">'
@@ -82,12 +88,12 @@ function initContent() {
     + '<div style="clear:both;float:left;width:calc(12.5% - 4.5px);margin:0;padding:3px;"></div>'
     + '<div class="conty c4">'
       + '<div id="_zNeck" class="toolTipclass">Neck</div>'
-      + '<input type="text" id="dn" class="editEnable inputThingy inputEn" value="43.35">' //176
+      + '<input type="text" id="dn" class="editEnable inputThingy inputEn" value="37.35">' //176
     + '</div>'
 
     + '<div class="conty c4">'
       + '<div id="_zWaist" class="toolTipclass">Waist</div>'
-      + '<input type="text" id="dw" class="editEnable inputThingy inputEn" value="89.55">' //82
+      + '<input type="text" id="dw" class="editEnable inputThingy inputEn" value="94.55">' //82
     + '</div>'
 
     + '<div class="conty c4">'
@@ -326,21 +332,26 @@ optimal waist measurement is half your height I heard too.
   if (document.getElementById('c').value !== '0000') {
     cc_dataSave();
   }
+
   //show the maintenance calories:
   document.getElementById('c').value = Math.round(totCals);
 
+  //calculate how many calories to add/remove if weight changes too much/little:
+  zRLPercent = Math.round(totCals * .1);
   //calculate Body-Fat here (new at 2017-03-04)
   var bfNum = 0;
   var zNeck = parseFloat(document.getElementById('dn').value);
   var zWaist = parseFloat(document.getElementById('dw').value);
   var zHip = parseFloat(document.getElementById('dh').value);
   var aHeight = zHeight * zConvert[0];
+
   //if the neck, waist, hips are in in CMs, convert to inches...
   if (zCm) {
     zNeck *= zConvert[0];
     zWaist *= zConvert[0];
     zHip *= zConvert[0];
   }
+
 /*
   (All circumference and height measurements are in inches.)
   Males: % body fat = 86.010  x log10(abdomen - neck)   -   70.041 x log10(height) + 36.76
@@ -412,26 +423,105 @@ Females: % body fat = 163.205 x log10(waist + hip - neck) - 97.684 x log10(heigh
 
   //is this the same as zWeight / (zHeight * zHeight)
   zToGain = (zWeight - tWeight);
-  //if this is a minus, then add 600?
-  if (zToGain > 0) {
-    tCals = -600;
+
+  //2019-08-15 change from just using NICE recommended 600 cals to % of maintenance cals
+  //first pass just use 20% - still better than the bog-standard 600 cals!
+  /*
+    ToDo: user-editable % with info on pros Vs. cons of higher and lower %s.
+    Generally this is:
+    lower percentages are easier, but it will take longer. Also more muscle mass is kept.
+    Higher percentages are tougher, but it will be shorter. Also more muscle mass is lost.
+    Either way, strength training can help keep more muscle mass while dieting.
+    Eating a bit more protein can also help.
+    Perhaps a volume-control style slider say from 5% - 30% ?
+    The bugger in that is where would I put the slider?
+    in the tooltip would be good for space, though perhaps it is time
+    to split the parts of the calculator into three 'screens'?
+  */
+  tCals = (totCals * .2);
+
+  // for the wording in Weeks to Target tooltip:
+  var w1 = 'increase', w2 = 'decrease';
+
+  // Give a little leeway for the target weight; 100g for now.
+  if (zToGain > 0.1) {
+    tCals = -tCals;
     document.getElementById('_zToLose').innerHTML = 'Lose&nbsp;target';
-  } else {
-    tCals = 600;
+  } else if (zToGain < -0.1){
+    w1 = 'decrease', w2 = 'increase';
     zToGain = -zToGain;
     document.getElementById('_zToLose').innerHTML = 'Gain&nbsp;target';
+  } else {
+    tCals = 0;
+    document.getElementById('_zToLose').innerHTML = 'Target&nbsp;Achieved!';
   }
-  //add/take 600 from the maintenance calories for target cals per day.
+  //add target cals to the maintenance cals for target cals per day.
   document.getElementById('cl').value = Math.round(totCals + tCals);
-  //amount of time it'd take to get to the ideal weight:
-  //times by 2 to get 0.5 into weeks
-  //my average appears to be 100g per day, 700g per week
-  //2.1Kg should take 3 weeks 2100/7?
+
+  /*  amount of time it'd take to get to the ideal weight:
+    I will make the assumption that losing 1kg of weight takes 7000 calories.
+    I've seen many articles saying 3500 cals per lb or 7700 per kg
+
+    I very much doubt this for real-world weight loss, because my last diet
+    started at a weight of 83.0kg, and ended 215 days later at 67.3kg.
+    In that time, I maintained a target calorie defecit of ~500cals though my
+    average defecit ended up around 322 cals.
+    My estimated total calorie defecit over the 215 days was -69309.
+
+    83.0-67.3 = 15.7kg lost in total.
+    69309/15.7 = 4414.586 calories per kg lost... well that is about half!
+
+    Just to be clear, I recalculated my maintenance (required) and target calories every week,
+    because as I lost weight, my required calories will decrease.
+
+    Also, I've read some research into this that suggests that the amount of
+    calories it takes to lose a kg depends on body composition - the more
+    body fat % a person has, the more weight is lost will be from fat, as
+    opposed to lean mass, glycogen, water, etc.
+
+    This makes sense because if your body is say 50% fat, more of the 'weight'
+    lost will be fat, but if your body is 10% fat, then it is much more likely
+    that only a little of your weight loss will be from fat.
+
+    (from https://www.nature.com/articles/0803720) - I spent the day looking
+    around at various articles..
+    The metabolizable energy densities of body:
+    glycogen 17.6 MJ/kg
+    protein  19.7 MJ/kg
+    fat      39.5 MJ/kg
+
+    another article says 7.6 MJ/kg for lean tissue, though same as above for fat
+
+    The usual 3500cals/lb is 32.2 MJ/kg, and so takes an average of
+    what of the body is metabolised to make up for a calorie defecit, but it is only an
+    average, and only works for women around 80-100kg in weight as far as I can
+    estimate, and even then the women's age, height, REE, etc. weren't there.
+
+    Interestingly, I cannot find much info about males vs females though one of
+    these articles says that because males have less body fat % than females,
+    then the males would lose slightly less fat at the same height/weight/age/activity.
+
+    I agree with this since that is also evident in the mifflin st. Joan REE calculation.
+    Males and Females are slightly different.
+
+    another one: https://www.cambridge.org/core/journals/british-journal-of-nutrition/article/body-fat-and-fatfree-mass-interrelationships-forbess-theory-revisited/E4058619DF9042AB22DF2CF7B0A88152
+  */
+
+  /*
+    Also toDo:
+    change to Days to target when weeks are < 2 or so?
+    How about months or years going the other way?
+  */
   document.getElementById('tg').value = Math.round(zToGain / .7);
+
+
+  //Gains n Losses for the Weeks to Total tooltip
+  var GnL = {a:'0.7kg',b:'1kg',c:'0.5kg'};
   //convert kg back to lb, cm back to inch if needed:
   if (!zKg) {
     zToGain *= zConvert[1];
     tWeight *= zConvert[1];
+    GnL = {a:'1.5 lb',b:'2 lb',c:'1 lb'};
   }
   if (!zCm) {
     iWaist *= zConvert[0];
@@ -442,6 +532,15 @@ Females: % body fat = 163.205 x log10(waist + hip - neck) - 97.684 x log10(heigh
   document.getElementById('iW').value = tWeight.toFixed(2);
   //amount of kg to lose to get to the ideal BMI
   document.getElementById('tl').value = zToGain.toFixed(2);
+
+  //update the tooltip with the new calorie amount.
+  toolTips.zToGoal =
+  'Assuming an average of '+GnL.a+' per week, this is how many weeks it would take to reach your target weight.<br><br>'
+  + 'Everybody is different, and though this calculator should be more accurate than most available, your individual body-type, metabolism, etc. may differ from the average.<br><br>'
+  + 'If your weight '+w2+'s more than '+GnL.b+' a week, use your activity levels to '+w1+' your maintenance calories by ' + zRLPercent + '<br><br>'
+  + 'If your weight '+w2+'s  less than '+GnL.c+' a week, use your activity levels to '+w2+' your maintenance calories by ' + zRLPercent
+;
+
 }
 function cc_changeInputBackColor(zID, zRem, zAdd) {
   var zElem = document.getElementById(zID);

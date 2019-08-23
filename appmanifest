@@ -2,6 +2,7 @@
   "name": "Calorie and body fat calculator",
   "short_name": "calorieCalculator",
   "description": "Calorie and body fat calculator by StewVed",
+  "start_url": ".",
   "lang": "en",
   "orientation": "landscape",
   "display": "fullscreen",
