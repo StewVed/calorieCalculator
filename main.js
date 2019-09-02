@@ -1,30 +1,29 @@
-var zAppVersion = '2019-08-23'
-, zAppPrefix = 'cc'
-, zRLPercent = 1
-, measureTips = '<br><br>Try to keep the measuring tape as horizontal as you can.<br><br>repeat each set of measurements three times. eg. neck, waist, neck, waist, neck, waist for Males. (not neck, neck, neck, waist, waist, waist!)'
-, useAsGuide = '<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)</span>'
-, toolTips = {
-  'zDob': 'Designed for 16+<br><br>Enter your date of birth in YYYY-MM-DD (ISO-8601) format.<br>eg, 1987-01-23 for the 23rd of January 1987.'
-, 'zNeck': 'Measure just under the Adam&apos; apple, taking care to not include the traps.' + measureTips
-, 'zWaist': 'Measure directly over the navel for Males, and a little above the navel for Females.' + measureTips
-, 'zHips': 'Measure the biggest rounding of the glutes (bum).' + measureTips
-, 'zSitting': '<span style="font-weight:bold;color:hsl(240, 100%, 33%)">This is automatically calculated by taking all of other activities out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>sitting or reclining</li><li>standing still, quietly</li><li>reading</li><li>listening to music (Not dancing)</li><li>desk work.</li></ul>'
-, 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>fidgeting</li><li>slow swimming</li></ul>'
-, 'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>'
-, 'zHeavy': 'This is High-intensity activity like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifting time. '
-, 'zBFat': 'This uses the US Navy&apos;s calculation for body fat percentage, which is apparently within 3% accuracy when measurements are properly taken.' + measureTips
-, 'zTBF': 'Specify what Body-Fat percentage you would like to be.<br><br>As a rough guide, healthy body fat ranges are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
-, 'ziWeight': 'Calculated using your specified Target Body-Fat percentage, with your Lean Body Mass remaining the same.<br><br>(strength training can minimise muscle-loss during losing weight.)'
-, 'ziWaist': 'An <span style="font-style:italic;font-weight:bold;">average</span> adult&apos;s ideal waist measurement is simply half their height :-)' + useAsGuide
-, 'zCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since you customised your activity-levels.'
-, 'zTargCals': 'Your target Calorie intake is 20% difference of your maintenance calories.<br><br>' + '20% is an average between fast weight loss which is hard but takes less time, and slow weight loss which is easy but takes a long time.'
-, 'zToLose': 'Simply the difference between your current weight and your target weight.' + useAsGuide
-, 'zToGoal': 'Assuming an average of 0.7kg per week, this is how many weeks it would take to reach your target weight.'
-}
-, zConvert = [0.39370078740157482544, 2.20462262184877566540, 60]
-, gameVars = {
-    go: 0
+var zAppPrefix = 'cc'
+  , zRLPercent = 1
+  , measureTips = '<br><br>Try to keep the measuring tape as horizontal as you can.<br><br>repeat each set of measurements three times. eg. neck, waist, neck, waist, neck, waist for Males. (not neck, neck, neck, waist, waist, waist!)'
+  , useAsGuide = '<br><br><span style="color:hsl(30, 100%, 33%);">(Use this only as a guide)</span>'
+  , toolTips = {
+    'zDob': 'Designed for 16+<br><br>Enter your date of birth in YYYY-MM-DD (ISO-8601) format.<br>eg, 1987-01-23 for the 23rd of January 1987.'
+  , 'zNeck': 'Measure just under the Adam&apos; apple, taking care to not include the traps.' + measureTips
+  , 'zWaist': 'Measure directly over the navel for Males, and a little above the navel for Females.' + measureTips
+  , 'zHips': 'Measure the biggest rounding of the glutes (bum).' + measureTips
+  , 'zSitting': '<span style="font-weight:bold;color:hsl(240, 100%, 33%)">This is automatically calculated by taking all of other activities out of a full day.</span><br><br>This activity level includes:<ul><li>relaxing</li><li>sitting or reclining</li><li>standing still, quietly</li><li>reading</li><li>listening to music (Not dancing)</li><li>desk work.</li></ul>'
+  , 'zLight': 'This activity level includes:<ul><li>light housework</li><li>walking</li><li>fidgeting</li><li>slow swimming</li></ul>'
+  , 'zMedium': 'This activity level includes:<ul><li>hoovering</li><li>normal swimming</li><li>jogging</li></ul>'
+  , 'zHeavy': 'This is High-intensity activity like:<ul><li>lifting weights</li><li>sprinting</li><li>very hard work</li></ul>Add only the time doing the work.<br>eg. 30 minutes weight training may only be around 5 minutes of actual lifting time. '
+  , 'zBFat': 'This uses the US Navy&apos;s calculation for body fat percentage, which is apparently within 3% accuracy when measurements are properly taken.' + measureTips
+  , 'zTBF': 'Specify what Body-Fat percentage you would like to be.<br><br>As a rough guide, healthy body fat ranges are:<br>Males between 12% and 22%,<br>Females between 21% and 31%'
+  , 'ziWeight': 'Calculated using your specified Target Body-Fat percentage, with your Lean Body Mass remaining the same.<br><br>(strength training can minimise muscle-loss during losing weight.)'
+  , 'ziWaist': 'An <span style="font-style:italic;font-weight:bold;">average</span> adult&apos;s ideal waist measurement is simply half their height :-)' + useAsGuide
+  , 'zCals': 'Your daily maintenance calorie requirement.<br><br>' + 'Use this amount of calories to keep your current weight.<br><br>' + 'This should be a quite accurate amount, since you customised your activity-levels.'
+  , 'zTargCals': 'Your target Calorie intake is 20% difference of your maintenance calories.<br><br>' + '20% is an average between fast weight loss which is hard but takes less time, and slow weight loss which is easy but takes a long time.'
+  , 'zToLose': 'Simply the difference between your current weight and your target weight.' + useAsGuide
+  , 'zToGoal': 'Assuming an average of 0.7kg per week, this is how many weeks it would take to reach your target weight.'
   }
+  , zConvert = [0.39370078740157482544, 2.20462262184877566540, 60]
+  , gameVars = {
+      go: 0
+    }
 ;
 
 /*
