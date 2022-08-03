@@ -5,8 +5,8 @@ Use it directly within GitHub at:
 https://stewved.github.io/calorieCalculator/
 
 Featuring (experimental HTML5 standard) "Add to Homescreen" for
-Android (chrome firefox browsers I think), and the ability to
-use offline, like a native app.
+Android (chrome firefox browsers I think), 
+and the ability to use offline, like a native app.
 
 Suggestions, tips/support, etc. welcome:
 https://github.com/StewVed/calorieCalculator/issues
